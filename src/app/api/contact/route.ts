@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { sendMail } from "@/lib/mail";
 import { SITE } from "@/lib/site";
-import { checkRate } from "@/lib/rate-limit";
-import { getClientIp } from "@/lib/request";
+import { rateLimit, clientIpFromRequest } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -25,10 +24,10 @@ function escapeHtml(str: string): string {
 }
 
 export async function POST(req: Request) {
-  // Rate limit: max 3 contact form submissions per IP per 10 minutes
-  const ip = getClientIp(req);
-  const allowed = checkRate(`contact:${ip}`, 3, 600_000);
-  if (!allowed) {
+  // Rate limit: max 3 contact form submissions per IP per ~10 minutes
+  const ip = clientIpFromRequest(req);
+  const rl = rateLimit({ key: `contact:${ip}`, capacity: 3, refillPerSecond: 3 / 600 });
+  if (!rl.ok) {
     return NextResponse.json(
       { error: "Terlalu banyak permintaan. Coba lagi dalam beberapa menit." },
       { status: 429 }
