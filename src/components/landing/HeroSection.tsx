@@ -60,11 +60,11 @@ export function HeroSection() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
-                    RA
+                    TO
                   </div>
                   <div>
-                    <p className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>Rizquna AI Assistant</p>
-                    <p className="text-[10px]" style={{ color: "var(--text-tertiary)" }}>Active 24/7</p>
+                    <p className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>Bot Toko Online (via Webhook)</p>
+                    <p className="text-[10px]" style={{ color: "var(--text-tertiary)" }}>Simulator Otomasi API</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
