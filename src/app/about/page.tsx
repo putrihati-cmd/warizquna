@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Tentang Kami",
   description:
-    "Mengenal Rizquna — platform WhatsApp Business API resmi Meta untuk developer dan pebisnis Indonesia.",
+    "Mengenal Rizquna — platform WhatsApp API Gateway dan Developer Tooling untuk developer dan pebisnis Indonesia.",
 };
 
 const VALUES = [
@@ -30,7 +30,7 @@ export default function AboutPage() {
             <span className="gradient-text">dengan WhatsApp API</span>
           </h1>
           <p className="mt-5 text-base sm:text-lg" style={{ color: "var(--text-secondary)" }}>
-            {SITE.brand} hadir untuk membuat akses ke WhatsApp Business API menjadi mudah, terjangkau,
+            {SITE.brand} hadir untuk membuat akses ke WhatsApp API Gateway menjadi mudah, terjangkau,
             dan ramah developer — terutama untuk pasar Indonesia.
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </div>
             <h2 className="text-xl font-bold mb-2">Misi</h2>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Menyediakan platform WhatsApp Business API yang stabil, aman, dan ramah developer dengan
+              Menyediakan platform WhatsApp API Gateway yang stabil, aman, dan ramah developer dengan
               biaya yang terjangkau bagi UMKM hingga enterprise di Indonesia.
             </p>
           </div>
@@ -54,7 +54,7 @@ export default function AboutPage() {
             </div>
             <h2 className="text-xl font-bold mb-2">Visi</h2>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Menjadi platform WhatsApp Business API #1 di Indonesia yang dipercaya oleh developer,
+              Menjadi platform WhatsApp API Gateway #1 di Indonesia yang dipercaya oleh developer,
               UMKM, sekolah, instansi, dan korporasi untuk komunikasi pelanggan modern.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h3 className="text-2xl sm:text-3xl font-bold">Bergabung dengan komunitas Rizquna</h3>
           <p className="mt-3" style={{ color: "var(--text-secondary)" }}>
-            Daftar gratis sekarang dan rasakan kemudahan WhatsApp Business API yang dirancang untuk Indonesia.
+            Daftar gratis sekarang dan rasakan kemudahan WhatsApp API Gateway yang dirancang untuk Indonesia.
           </p>
           <Link
             href="/register"

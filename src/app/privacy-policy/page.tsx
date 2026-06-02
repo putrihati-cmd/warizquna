@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
         <ul>
           <li>Informasi akun: nama, email, nomor telepon, dan kata sandi terenkripsi.</li>
           <li>Informasi pembayaran: diproses oleh penyedia payment gateway pihak ketiga (Midtrans). Kami tidak menyimpan data kartu kredit Anda.</li>
-          <li>Data WhatsApp Business: token, phone number ID, dan WABA ID yang dienkripsi AES-256-GCM.</li>
+          <li>Data koneksi WhatsApp: token sesi dan kredensial perangkat Anda yang dienkripsi secara aman menggunakan AES-256-GCM.</li>
           <li>Data penggunaan: log akses, audit aktivitas user, statistik pengiriman pesan.</li>
         </ul>
       </LegalSection>
@@ -45,8 +45,8 @@ export default function PrivacyPolicy() {
       <LegalSection title="4. Berbagi Informasi">
         <p>
           Kami tidak menjual data Anda. Informasi hanya dibagikan kepada penyedia layanan pihak
-          ketiga yang membantu operasional kami (seperti Midtrans untuk pembayaran dan Meta untuk
-          pengiriman pesan WhatsApp), serta kepada otoritas hukum bila diwajibkan oleh peraturan
+          ketiga yang membantu operasional kami (seperti Midtrans untuk pembayaran), infrastruktur
+          WhatsApp untuk pengiriman pesan, serta kepada otoritas hukum bila diwajibkan oleh peraturan
           perundang-undangan.
         </p>
       </LegalSection>

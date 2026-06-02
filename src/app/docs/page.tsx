@@ -159,7 +159,7 @@ requests.post(
 };
 
 const WEBHOOK = {
-  curl: `# Verifikasi (Meta menghubungi Anda dengan GET)
+  curl: `# Verifikasi (Gateway menghubungi Anda dengan GET)
 curl "https://your.app/webhook?hub.mode=subscribe&hub.verify_token=YOUR_TOKEN&hub.challenge=12345"`,
   node: `import express from "express";
 const app = express();
@@ -211,7 +211,7 @@ const TOPICS = [
   { icon: BookOpen, title: "Getting Started", desc: "Setup workspace, generate API key, dan kirim pesan pertama.", anchor: "#getting-started" },
   { icon: Key, title: "Authentication", desc: "Bearer token, format API key, dan rate limit per workspace.", anchor: "#authentication" },
   { icon: Send, title: "Send Text", desc: "POST /api/v1/messages — pesan teks langsung.", anchor: "#send-text" },
-  { icon: Send, title: "Send Template", desc: "Kirim template Meta-approved untuk pesan di luar 24-hour window.", anchor: "#send-template" },
+  { icon: Send, title: "Send Template", desc: "Kirim template pesan custom dengan variabel dinamis.", anchor: "#send-template" },
   { icon: Inbox, title: "Receive Messages", desc: "Webhook real-time untuk pesan masuk, status, dan event lain.", anchor: "#webhook" },
   { icon: Users, title: "Contacts & Groups", desc: "Manage kontak, label, atribut custom, dan segmentasi.", anchor: "#contacts" },
   { icon: ShieldCheck, title: "Security", desc: "Enkripsi token, rotasi API key, dan audit log.", anchor: "#security" },
@@ -267,7 +267,7 @@ export default function DocsPage() {
           <ol className="list-decimal pl-6 space-y-1.5">
             <li>Daftar akun di <Link href="/register" className="font-semibold" style={{ color: "var(--rizquna-green)" }}>halaman register</Link>.</li>
             <li>Buka <Link href="/dashboard" className="font-semibold" style={{ color: "var(--rizquna-green)" }}>Dashboard</Link>, klik <strong>API Keys</strong>, lalu buat key baru.</li>
-            <li>Hubungkan nomor WhatsApp Business API di panel <Link href="/admin" className="font-semibold" style={{ color: "var(--rizquna-green)" }}>Admin Gateway</Link>.</li>
+            <li>Hubungkan nomor WhatsApp Anda di panel <Link href="/admin" className="font-semibold" style={{ color: "var(--rizquna-green)" }}>Admin Gateway</Link>.</li>
             <li>Lakukan request pertama Anda dengan contoh kode di bawah.</li>
           </ol>
         </DocSection>
@@ -284,13 +284,13 @@ export default function DocsPage() {
         </DocSection>
 
         <DocSection id="send-text" title="Kirim Pesan Teks">
-          <p>Pesan teks langsung. Hanya valid untuk kontak yang membalas Anda dalam 24 jam terakhir.</p>
+          <p>Kirim pesan teks langsung ke nomor tujuan.</p>
           <CodeTabs samples={SEND_TEXT} />
         </DocSection>
 
         <DocSection id="send-template" title="Kirim Pesan Template">
           <p>
-            Untuk pesan di luar 24-hour window, gunakan template yang sudah di-approve Meta.
+            Gunakan template untuk pesan terstruktur atau pesan masal.
             Variabel dinamis <code>{`{{1}}`}</code>, <code>{`{{2}}`}</code> dst diisi via <code>parameters</code>.
           </p>
           <CodeTabs samples={SEND_TEMPLATE} />
@@ -320,7 +320,7 @@ export default function DocsPage() {
 
         <DocSection id="security" title="Keamanan">
           <ul className="list-disc pl-6 space-y-1.5">
-            <li>Token WABA dienkripsi <strong>AES-256-GCM</strong></li>
+            <li>Token sesi dienkripsi <strong>AES-256-GCM</strong></li>
             <li>Password user di-hash dengan <strong>bcrypt</strong> (cost 12)</li>
             <li>API key disimpan sebagai <strong>SHA-256 hash</strong> — plaintext tidak pernah disimpan</li>
             <li>Semua koneksi via <strong>TLS 1.3</strong></li>

@@ -48,11 +48,11 @@ export default function TermsOfService() {
         </ul>
       </LegalSection>
 
-      <LegalSection title="5. Kewajiban Pengguna terhadap Meta">
+      <LegalSection title="5. Kebijakan & Penggunaan Layanan">
         <p>
-          Pengguna wajib mematuhi WhatsApp Business Messaging Policy dan WhatsApp Commerce Policy
-          dari Meta. Pelanggaran terhadap kebijakan tersebut dapat mengakibatkan suspensi akun WABA
-          Anda oleh Meta, di luar kendali kami.
+          Pengguna wajib mematuhi ketentuan resmi WhatsApp. Pelanggaran terhadap kebijakan tersebut 
+          (seperti melakukan spamming) dapat mengakibatkan suspensi nomor WhatsApp Anda oleh pihak WhatsApp, 
+          di luar kendali kami.
         </p>
       </LegalSection>
 
@@ -61,9 +61,9 @@ export default function TermsOfService() {
           {SITE.brand} menyediakan layanan "as-is". Kami tidak bertanggung jawab atas:
         </p>
         <ul>
-          <li>Kerugian akibat suspensi WABA oleh Meta.</li>
+          <li>Kerugian akibat suspensi nomor WhatsApp oleh pihak WhatsApp/Meta.</li>
           <li>Kerugian tidak langsung, kehilangan keuntungan, atau kehilangan data.</li>
-          <li>Gangguan layanan akibat force majeure atau gangguan dari pihak ketiga (Meta, ISP, payment gateway).</li>
+          <li>Gangguan layanan akibat force majeure atau gangguan dari pihak ketiga (WhatsApp, ISP, payment gateway).</li>
         </ul>
         <p>Tanggung jawab maksimum kami terbatas pada nilai langganan 1 (satu) bulan terakhir.</p>
       </LegalSection>

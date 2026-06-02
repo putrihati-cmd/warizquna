@@ -5,7 +5,7 @@ import { ArrowRight, UserPlus, Link2, Send, BarChart3, CheckCircle2 } from "luci
 export const metadata: Metadata = {
   title: "Cara Kerja",
   description:
-    "Pelajari cara kerja Rizquna WhatsApp Gateway: daftar akun, hubungkan WABA, kirim pesan, dan monitor performa.",
+    "Pelajari cara kerja Rizquna WhatsApp Gateway: daftar akun, hubungkan WhatsApp via QR Code, kirim pesan, dan monitor performa.",
 };
 
 const STEPS = [
@@ -20,8 +20,8 @@ const STEPS = [
     n: 2,
     icon: Link2,
     title: "Hubungkan Nomor WhatsApp",
-    body: "Buat System User di Meta Business Manager. Paste Access Token, Phone Number ID, dan WABA ID ke dashboard Rizquna.",
-    items: ["Tutorial panduan step-by-step", "Validasi otomatis kredensial", "Multi-WABA dalam satu workspace"],
+    body: "Buka menu Device di dashboard Anda, buat sesi baru, dan scan QR Code menggunakan WhatsApp di HP Anda (Perangkat Tertaut).",
+    items: ["Tutorial panduan step-by-step", "Koneksi instan kurang dari 10 detik", "Hubungkan beberapa nomor sekaligus"],
   },
   {
     n: 3,

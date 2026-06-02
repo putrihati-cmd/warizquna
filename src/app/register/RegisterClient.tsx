@@ -59,7 +59,7 @@ export default function RegisterClient() {
         </p>
         <ul className="mt-7 space-y-3 text-sm" style={{ color: "var(--text-secondary)" }}>
           {[
-            "Setup nomor WABA dalam < 5 menit",
+            "Koneksi WhatsApp instan via QR Code",
             "Tanpa biaya setup, tanpa biaya tersembunyi",
             "Server Indonesia, billing Rupiah",
             "Support langsung dari tim Indonesia",

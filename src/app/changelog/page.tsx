@@ -43,8 +43,7 @@ const RELEASES = [
     version: "1.2.0",
     date: "2026-04-20",
     highlights: [
-      { type: "feature", text: "Customer Ticketing System" },
-      { type: "feature", text: "Anti WA Banned Filter" },
+      { type: "feature", text: "Smart Delay & Spintax Filter" },
       { type: "feature", text: "Export laporan ke PDF & Excel" },
       { type: "fix", text: "Webhook retry logic kini support exponential backoff" },
     ],
@@ -63,7 +62,7 @@ const RELEASES = [
     date: "2026-02-01",
     highlights: [
       { type: "feature", text: "Public launch — Rizquna WA Gateway" },
-      { type: "feature", text: "WhatsApp Cloud API resmi Meta" },
+      { type: "feature", text: "WhatsApp API Gateway & Webhook" },
       { type: "feature", text: "Inbox terpusat, broadcast, template, REST API" },
     ],
   },

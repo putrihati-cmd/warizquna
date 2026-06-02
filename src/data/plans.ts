@@ -20,7 +20,7 @@ export const PLANS: Plan[] = [
     href: "/register",
     cta: "Mulai Gratis",
     features: {
-      "API WhatsApp resmi": true,
+      "API Gateway & Wrapper": true,
       "Dashboard pengiriman": true,
       "Webhook masuk": false,
       "Manajemen kontak": true,
@@ -37,7 +37,7 @@ export const PLANS: Plan[] = [
     href: "/register",
     cta: "Coba Starter",
     features: {
-      "API WhatsApp resmi": true,
+      "API Gateway & Wrapper": true,
       "Dashboard pengiriman": true,
       "Webhook masuk": true,
       "Manajemen kontak": true,
@@ -55,7 +55,7 @@ export const PLANS: Plan[] = [
     cta: "Pilih Growth",
     highlight: true,
     features: {
-      "API WhatsApp resmi": true,
+      "API Gateway & Wrapper": true,
       "Dashboard pengiriman": true,
       "Webhook masuk": true,
       "Manajemen kontak": true,
@@ -72,7 +72,7 @@ export const PLANS: Plan[] = [
     href: "/contact",
     cta: "Hubungi Kami",
     features: {
-      "API WhatsApp resmi": true,
+      "API Gateway & Wrapper": true,
       "Dashboard pengiriman": true,
       "Webhook masuk": true,
       "Manajemen kontak": true,
@@ -85,7 +85,7 @@ export const PLANS: Plan[] = [
 export const FEATURE_GROUPS = [
   {
     title: "Fitur Utama",
-    items: ["API WhatsApp resmi", "Dashboard pengiriman", "Webhook masuk"],
+    items: ["API Gateway & Wrapper", "Dashboard pengiriman", "Webhook masuk"],
   },
   {
     title: "Manajemen & Dukungan",

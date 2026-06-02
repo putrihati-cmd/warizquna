@@ -43,10 +43,10 @@ export function FeaturesSection() {
 
 function HowItWorks() {
   const steps = [
-    { n: 1, t: "Daftar Akun Rizquna", d: "Buat akun gratis di Rizquna. Tidak perlu kartu kredit — langsung dapat trial 30 hari." },
-    { n: 2, t: "Hubungkan Nomor WhatsApp", d: "Buat System User di Meta Business Manager, lalu paste Access Token, Phone Number ID, dan WABA ID ke dashboard Rizquna." },
-    { n: 3, t: "Mulai Kirim Pesan", d: "Gunakan dashboard untuk mengirim pesan, mengelola template, atau integrasikan REST API Rizquna ke sistem Anda." },
-    { n: 4, t: "Monitor & Kelola", d: "Pantau statistik pengiriman, kelola inbox percakapan, dan optimalkan strategi komunikasi bisnis Anda." },
+    { n: 1, t: "Daftar Akun Rizquna", d: "Buat akun gratis di Rizquna. Proses cepat dan langsung masuk ke dashboard utama." },
+    { n: 2, t: "Hubungkan Nomor WhatsApp", d: "Hubungkan nomor WhatsApp Anda secara instan dengan memindai (scan) QR Code di dashboard." },
+    { n: 3, t: "Mulai Kirim Pesan", d: "Kirim pesan lewat dashboard panel atau hubungkan REST API Rizquna ke aplikasi atau website Anda." },
+    { n: 4, t: "Pantau & Analisis", d: "Dapatkan laporan log pengiriman, kelola kontak, dan atur pesan otomatis dengan mudah." },
   ];
   return (
     <section id="how-it-works" className="py-20 border-b" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-light)" }}>
@@ -79,9 +79,9 @@ function HowItWorks() {
 
 function WhyDifferent() {
   const items = [
-    { icon: Lock, t: "Privasi Terjaga", d: "Koneksi via System User Token — akun Facebook/Meta pribadi Anda TIDAK pernah terhubung ke Rizquna." },
-    { icon: ShieldCheck, t: "API Resmi & Stabil", d: "Menggunakan Meta Cloud API resmi. Tidak ada risiko banned seperti API unofficial (Baileys/WA-Web)." },
-    { icon: Sparkles, t: "Gratis Selamanya", d: "Akses fitur inti secara gratis selamanya. Pesan unlimited tanpa kuota. Free trial 30 hari untuk fitur premium." },
+    { icon: Lock, t: "Aman & Terenkripsi", d: "Semua pesan diproses menggunakan enkripsi standar untuk menjaga keamanan data bisnis Anda." },
+    { icon: ShieldCheck, t: "Tanpa Biaya Per Pesan", d: "Gunakan server sendiri/gateway mandiri tanpa harus membayar biaya per pesan dari Meta." },
+    { icon: Sparkles, t: "Setup Sangat Mudah", d: "Cukup scan QR Code untuk menghubungkan nomor Anda. Tanpa perlu mendaftar Meta Business API yang rumit." },
   ];
   return (
     <section className="py-20 border-b" style={{ borderColor: "var(--border-light)" }}>

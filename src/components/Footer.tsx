@@ -14,7 +14,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-4 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Platform WhatsApp Business API resmi Meta. Kelola pesan otomatis, inbox terpusat, dan
+              Platform WhatsApp API Gateway & Developer Tooling. Kelola pesan otomatis, inbox terpusat, dan
               integrasi API tanpa pusing.
             </p>
             <div className="flex items-center gap-2 mt-5">

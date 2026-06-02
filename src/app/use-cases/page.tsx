@@ -27,7 +27,7 @@ const CASES = [
     desc: "Tingkatkan pengalaman pelanggan dengan update real-time di setiap fase order — dari pembayaran hingga pengiriman.",
     items: [
       "Kirim konfirmasi order, update pengiriman, dan invoice via WhatsApp",
-      "Broadcast promosi ke pelanggan dengan template yang disetujui Meta",
+      "Broadcast promosi ke pelanggan dengan template kustom",
       "Tingkatkan repeat order dengan pesan follow-up otomatis",
       "Integrasi WooCommerce, OrderOnline.id, Mayar, Berdu.id",
     ],
@@ -72,7 +72,7 @@ const CASES = [
     icon: Building2,
     eyebrow: "Instansi & Pemerintahan",
     title: "Layanan Publik Digital",
-    desc: "Sediakan kanal komunikasi resmi yang aman, terlacak, dan terverifikasi Meta.",
+    desc: "Sediakan kanal komunikasi yang aman, terlacak, dan responsif.",
     items: [
       "Notifikasi status pelayanan publik",
       "Survey kepuasan otomatis pasca-layanan",
@@ -96,11 +96,11 @@ const CASES = [
     icon: Banknote,
     eyebrow: "Keuangan & Koperasi",
     title: "Notifikasi Transaksi & Tagihan",
-    desc: "Kirim notifikasi otentik dengan template Meta-approved. Cocok untuk koperasi, fintech, dan multifinance.",
+    desc: "Kirim notifikasi transaksi otomatis dengan cepat. Cocok untuk koperasi, fintech, dan multifinance.",
     items: [
       "Notifikasi transaksi & jatuh tempo cicilan",
       "Reminder bayar tagihan otomatis",
-      "Verifikasi OTP via template authentication",
+      "Verifikasi OTP instan via WhatsApp",
       "Enkripsi end-to-end & audit log",
     ],
   },

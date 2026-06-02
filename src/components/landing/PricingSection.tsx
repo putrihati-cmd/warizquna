@@ -12,7 +12,7 @@ export function PricingSection() {
       cta: "Pilih Paket",
       href: "/register?planId=free",
       highlight: false,
-      bullets: ["Unlimited pesan/bulan", "1 nomor WABA", "1 anggota tim", "1 API Key", "WhatsApp API Resmi Meta", "Inbox Percakapan", "Template Pesan Meta", "Webhook Real-time"],
+      bullets: ["Pesan unlimited", "1 nomor WhatsApp", "1 anggota tim", "1 API Key", "WhatsApp API Gateway", "Inbox Percakapan", "Template Pesan Custom", "Webhook Real-time"],
     },
     {
       name: "Business",
@@ -21,7 +21,7 @@ export function PricingSection() {
       cta: "Pilih Paket",
       href: "/register?planId=business",
       highlight: true,
-      bullets: ["Unlimited pesan/bulan", "3 nomor WABA", "10 anggota tim", "5 API Key", "Inbox Multi-Agent", "Broadcast Massal & Schedule", "Smart Auto Reply", "Analytics Lengkap"],
+      bullets: ["Pesan unlimited", "3 nomor WhatsApp", "10 anggota tim", "5 API Key", "Inbox Multi-Agent", "Broadcast Massal & Schedule", "Smart Auto Reply", "Analytics Lengkap"],
     },
     {
       name: "Professional",
@@ -30,7 +30,7 @@ export function PricingSection() {
       cta: "Pilih Paket",
       href: "/register?planId=professional",
       highlight: false,
-      bullets: ["Unlimited pesan/bulan", "10 nomor WABA", "30 anggota tim", "15 API Key", "AI Smart Bot Action", "Anti WA Banned Filter", "Customer Ticketing System", "Export Laporan PDF/Excel"],
+      bullets: ["Pesan unlimited", "10 nomor WhatsApp", "30 anggota tim", "15 API Key", "AI Smart Bot Action", "Pengaturan Delay Kirim", "Customer Ticketing System", "Export Laporan PDF/Excel"],
     },
   ];
 

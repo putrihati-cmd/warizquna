@@ -29,7 +29,7 @@ import {
 export const metadata: Metadata = {
   title: "Fitur",
   description:
-    "Fitur lengkap WhatsApp Gateway Rizquna: API resmi Meta, inbox multi-agent, broadcast, auto reply, AI bot, dan analytics.",
+    "Fitur lengkap WhatsApp Gateway Rizquna: API gateway & webhook, inbox multi-agent, broadcast, auto reply, AI bot, dan analytics.",
 };
 
 type Feature = {
@@ -44,9 +44,9 @@ const FEATURES: Feature[] = [
   {
     icon: Zap,
     emoji: "🚀",
-    title: "WhatsApp API Resmi Meta",
-    desc: "Terhubung langsung ke Meta Cloud API resmi. Kirim dan terima pesan melalui API yang stabil, aman, dan sesuai kebijakan Meta. Tidak menggunakan API unofficial yang berisiko banned.",
-    bullets: ["REST API endpoint sederhana", "Dokumentasi lengkap", "Sandbox testing tersedia", "SDK support"],
+    title: "WhatsApp API Gateway & Client",
+    desc: "Integrasikan nomor WhatsApp Anda dengan REST API sederhana. Kirim dan terima pesan secara otomatis menggunakan endpoint developer-friendly yang stabil.",
+    bullets: ["REST API endpoint sederhana", "Dokumentasi lengkap", "Dashboard monitoring", "Integrasi webhook cepat"],
   },
   {
     icon: Send,
@@ -87,8 +87,8 @@ const FEATURES: Feature[] = [
     icon: Megaphone,
     emoji: "📢",
     title: "Broadcast & Scheduled Send",
-    desc: "Kirim pesan massal ke ribuan kontak sekaligus dengan antrian otomatis dan rate limiting sesuai kebijakan Meta.",
-    bullets: ["Bulk send ke banyak nomor", "Jadwal pengiriman", "Antrian otomatis (BullMQ)", "Rate limiting cerdas"],
+    desc: "Kirim pesan massal ke ribuan kontak sekaligus dengan antrian otomatis dan jeda pengiriman cerdas untuk meminimalkan spam.",
+    bullets: ["Bulk send ke banyak nomor", "Jadwal pengiriman", "Antrian otomatis (BullMQ)", "Rate limiting & delay cerdas"],
   },
   {
     icon: Calendar,
@@ -114,9 +114,9 @@ const FEATURES: Feature[] = [
   {
     icon: FileText,
     emoji: "📋",
-    title: "Template Pesan",
-    desc: "Buat, edit, dan submit template pesan untuk review Meta langsung dari dashboard. Support variabel dinamis dan media.",
-    bullets: ["Submit ke Meta langsung", "Variabel dinamis {{1}}", "Header gambar/video/dokumen", "Preview sebelum submit"],
+    title: "Template Pesan Custom",
+    desc: "Buat template pesan dengan variabel dinamis untuk mempermudah CS mengirim pesan berulang kepada pelanggan secara instan.",
+    bullets: ["Pesan boilerplate praktis", "Variabel dinamis {{nama}}", "Dukungan attachment media", "Kelola template di satu tempat"],
   },
   {
     icon: Edit3,
@@ -130,7 +130,7 @@ const FEATURES: Feature[] = [
     emoji: "🔀",
     title: "Spintax Replacement",
     desc: "Fitur canggih yang dapat memanipulasi kata pada isi kalimat (word-by-word) di pesan Anda untuk variasi otomatis.",
-    bullets: ["Variasi kalimat otomatis", "Hindari deteksi spam Meta", "Syntax mudah {Halo|Hai}", "Pesan terlihat natural"],
+    bullets: ["Variasi kalimat otomatis", "Hindari deteksi spam berlebihan", "Syntax mudah {Halo|Hai}", "Pesan terlihat natural"],
   },
   {
     icon: Bot,
@@ -165,7 +165,7 @@ const FEATURES: Feature[] = [
     emoji: "📊",
     title: "Analytics & Laporan",
     desc: "Pantau performa pengiriman pesan, delivery rate, dan statistik template dalam grafik visual yang mudah dibaca.",
-    bullets: ["Grafik trend harian/mingguan", "Statistik per nomor WABA", "Laporan biaya & usage", "Export CSV/Excel"],
+    bullets: ["Grafik trend harian/mingguan", "Statistik per nomor WhatsApp", "Laporan biaya & usage", "Export CSV/Excel"],
   },
   {
     icon: Activity,
@@ -177,9 +177,9 @@ const FEATURES: Feature[] = [
   {
     icon: AlertTriangle,
     emoji: "⚠️",
-    title: '"Bad Words" Filter',
-    desc: "Fitur canggih Anti WA Banned yang mendeteksi kata/kalimat yang dilarang pada pesan Anda demi menjaga keamanan nomor.",
-    bullets: ["Deteksi kata sensitif otomatis", "Cegah pemblokiran akun Meta", "Daftar kata bisa dikustomisasi", "Peringatan sebelum dikirim"],
+    title: "Penyaring Kata (Filter Spam)",
+    desc: "Mencegah pengiriman pesan yang berisi kata-kata sensitif atau spam dengan sistem blacklist kata demi keamanan reputasi nomor Anda.",
+    bullets: ["Deteksi kata sensitif otomatis", "Kurangi risiko laporan spam", "Daftar kata bisa dikustomisasi", "Peringatan sebelum dikirim"],
   },
   {
     icon: Ticket,

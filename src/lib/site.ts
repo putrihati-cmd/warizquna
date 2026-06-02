@@ -1,9 +1,9 @@
 export const SITE = {
   name: "Rizquna",
   brand: "Rizquna WA Gateway",
-  tagline: "WhatsApp API Free & Gateway Resmi Meta",
+  tagline: "WhatsApp API Gateway & Developer Tooling",
   description:
-    "Platform WhatsApp Business API yang dirancang untuk Developer dan Pebisnis Indonesia. Akses fitur inti gratis selamanya, pesan unlimited tanpa kuota.",
+    "Platform WhatsApp Gateway mandiri dan API wrapper yang dirancang untuk Developer & Pebisnis Indonesia. Kirim pesan, OTP, dan kelola chat dengan mudah.",
   domain: "wa.rizquna.id",
   url: "https://wa.rizquna.id",
   email: "admin@rizquna.id",

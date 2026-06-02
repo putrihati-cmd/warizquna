@@ -50,7 +50,7 @@ export default function OpengraphImage() {
               color: "rgba(255,255,255,0.75)",
             }}
           >
-            WhatsApp Business API
+            WhatsApp API Gateway
           </p>
           <h1
             style={{
@@ -64,7 +64,7 @@ export default function OpengraphImage() {
           >
             WhatsApp API Free
             <br />
-            <span style={{ color: "#25D366" }}>& Gateway Resmi Meta.</span>
+            <span style={{ color: "#25D366" }}>& API Gateway Mandiri.</span>
           </h1>
           <p
             style={{

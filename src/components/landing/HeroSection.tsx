@@ -13,13 +13,13 @@ export function HeroSection() {
             style={{ background: "var(--bg-secondary)", borderColor: "var(--border)", color: "var(--text-secondary)" }}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            Official Meta Cloud API Partner
+            WhatsApp API Gateway & Tooling
           </span>
           
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]" style={{ color: "var(--text-primary)" }}>
-            WhatsApp API Free &
+            WhatsApp API Gateway &
             <br />
-            <span className="text-gray-400">Gateway Resmi Meta.</span>
+            <span className="text-gray-400">Wrapper Mandiri.</span>
           </h1>
           
           <p className="max-w-2xl mx-auto text-base sm:text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
@@ -135,10 +135,10 @@ function ChatBubble({ side, children }: { side: "left" | "right"; children: Reac
 function TrustBar() {
   const items = [
     { icon: Lock, text: "Enkripsi AES-256" },
-    { icon: Server, text: "99.9% SLA Uptime" },
+    { icon: Server, text: "Koneksi Cepat & Stabil" },
     { icon: Globe, text: "Server Indonesia" },
     { icon: Sparkles, text: "Gratis Selamanya (Fitur Inti)" },
-    { icon: ShieldCheck, text: "Meta Verified Partner" },
+    { icon: ShieldCheck, text: "Integrasi Mudah & Cepat" },
   ];
   return (
     <section className="py-10 border-y" style={{ borderColor: "var(--border-light)", background: "var(--bg-secondary)" }}>
