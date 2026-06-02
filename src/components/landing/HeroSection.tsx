@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Send, Lock, Server, Globe, Sparkles } from "lucide-react";
 import { SITE } from "@/lib/site";
-import { CUSTOMERS } from "@/data/landing";
 
 export function HeroSection() {
   return (
@@ -153,49 +152,6 @@ function TrustBar() {
               </span>
             );
           })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CustomerLogos() {
-  const items = [...CUSTOMERS, ...CUSTOMERS];
-  return (
-    <section className="py-14 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p
-          className="text-center text-xs font-bold uppercase tracking-widest mb-7"
-          style={{ color: "var(--text-tertiary)" }}
-        >
-          Dipercaya oleh berbagai organisasi di Indonesia
-        </p>
-        <div className="relative">
-          <div
-            className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to right, var(--bg-primary), transparent)" }}
-          />
-          <div
-            className="absolute inset-y-0 right-0 w-16 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to left, var(--bg-primary), transparent)" }}
-          />
-          <div className="marquee-track">
-            {items.map((c, i) => (
-              <div key={`${c.name}-${i}`} className="marquee-item-hover">
-                <span
-                  className="w-7 h-7 rounded-md flex items-center justify-center text-[11px] font-extrabold shrink-0"
-                  style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
-                >
-                  {c.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .slice(0, 2)
-                    .join("")}
-                </span>
-                <span className="text-sm font-semibold whitespace-nowrap">{c.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
