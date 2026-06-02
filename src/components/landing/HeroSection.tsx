@@ -7,13 +7,6 @@ export function HeroSection() {
   return (
     <>
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at 20% 10%, #25D36622, transparent 50%), radial-gradient(circle at 80% 30%, #128C7E22, transparent 50%)",
-          }}
-        />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <span

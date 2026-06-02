@@ -11,13 +11,6 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-30 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at 30% 20%, #25D36622, transparent 50%), radial-gradient(circle at 70% 60%, #128C7E22, transparent 50%)",
-        }}
-      />
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
         {eyebrow && (
           <span
