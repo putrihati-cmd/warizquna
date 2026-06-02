@@ -21,25 +21,6 @@ export async function GET(req: Request) {
 
   const state = crypto.randomBytes(32).toString("hex");
 
-  const cookieStore = await cookies();
-  cookieStore.set("oauth_state", state, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 600, // 10 minutes
-  });
-
-  if (redirectParam) {
-    cookieStore.set("oauth_redirect", redirectParam, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 600, // 10 minutes
-    });
-  }
-
   const redirectUri = `${appUrl}/api/auth/callback/google`;
 
   const googleAuthUrl =
@@ -52,5 +33,25 @@ export async function GET(req: Request) {
     `&access_type=offline` +
     `&prompt=consent`;
 
-  return NextResponse.redirect(googleAuthUrl);
+  const response = NextResponse.redirect(googleAuthUrl);
+
+  response.cookies.set("oauth_state", state, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 600, // 10 minutes
+  });
+
+  if (redirectParam) {
+    response.cookies.set("oauth_redirect", redirectParam, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 600, // 10 minutes
+    });
+  }
+
+  return response;
 }
