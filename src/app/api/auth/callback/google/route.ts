@@ -9,9 +9,10 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || `${url.protocol}//${url.host}`;
 
   if (!code) {
-    return NextResponse.redirect(new URL("/login?error=no_code", req.url));
+    return NextResponse.redirect(`${appUrl}/login?error=no_code`);
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -19,11 +20,11 @@ export async function GET(req: Request) {
 
   if (!clientId || !clientSecret) {
     console.error("Google OAuth client credentials are not configured in environment variables.");
-    return NextResponse.redirect(new URL("/login?error=config_error", req.url));
+    return NextResponse.redirect(`${appUrl}/login?error=config_error`);
   }
 
-  // Dynamically resolve redirect URI to match the exact protocol and host of the incoming request
-  const redirectUri = `${url.protocol}//${url.host}/api/auth/callback/google`;
+  // Use the canonical app URL so redirect_uri matches what's registered in Google Cloud Console
+  const redirectUri = `${appUrl}/api/auth/callback/google`;
 
   try {
     // 1. Exchange authorization code for token
@@ -42,7 +43,7 @@ export async function GET(req: Request) {
     const tokenData = await tokenRes.json();
     if (tokenData.error) {
       console.error("Google token exchange error:", tokenData.error_description || tokenData.error);
-      return NextResponse.redirect(new URL("/login?error=token_error", req.url));
+      return NextResponse.redirect(`${appUrl}/login?error=token_error`);
     }
 
     // 2. Fetch user profile details from Google userinfo API
@@ -53,7 +54,7 @@ export async function GET(req: Request) {
     const googleUser = await userRes.json();
     if (!googleUser.email) {
       console.error("Google profile did not contain email address.");
-      return NextResponse.redirect(new URL("/login?error=missing_email", req.url));
+      return NextResponse.redirect(`${appUrl}/login?error=missing_email`);
     }
 
     const db = getDb();
@@ -129,9 +130,9 @@ export async function GET(req: Request) {
     });
 
     // 4. Redirect logged-in user to dashboard
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(`${appUrl}/dashboard`);
   } catch (error) {
     console.error("Google Auth Callback Exception:", error);
-    return NextResponse.redirect(new URL("/login?error=server_error", req.url));
+    return NextResponse.redirect(`${appUrl}/login?error=server_error`);
   }
 }
