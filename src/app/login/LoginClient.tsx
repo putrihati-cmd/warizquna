@@ -95,6 +95,32 @@ export default function LoginClient() {
           {loading ? "Memproses..." : "Masuk"}
         </button>
 
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t" style={{ borderColor: "var(--border-light)" }} />
+          <span className="px-3 text-xs uppercase font-semibold tracking-wider" style={{ color: "var(--text-tertiary)" }}>
+            atau
+          </span>
+          <div className="flex-1 border-t" style={{ borderColor: "var(--border-light)" }} />
+        </div>
+
+        <a
+          href="/api/auth/google"
+          className="flex items-center justify-center gap-3 w-full py-3 rounded-xl text-sm font-bold border transition-all hover:-translate-y-0.5 shadow-sm hover:shadow-md"
+          style={{
+            background: "var(--bg-secondary)",
+            borderColor: "var(--border-light)",
+            color: "var(--text-primary)"
+          }}
+        >
+          <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+            <path
+              fill="#EA4335"
+              d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.2-5.136 4.2a6.38 6.38 0 0 1-6.38-6.38 6.38 6.38 0 0 1 6.38-6.38c2.682 0 4.882 1.84 5.464 4.31l4.057-3.15C21.272 3.84 17.152 1.3 12.24 1.3 6.222 1.3 1.3 6.222 1.3 12.24s4.922 10.94 10.94 10.94c6.264 0 10.94-4.676 10.94-10.94 0-.648-.052-1.32-.162-1.955H12.24Z"
+            />
+          </svg>
+          <span>Masuk dengan Google</span>
+        </a>
+
         <p className="text-center text-xs" style={{ color: "var(--text-tertiary)" }}>
           Untuk admin gateway, gunakan{" "}
           <a href="/admin" className="font-semibold" style={{ color: "var(--rizquna-green)" }}>

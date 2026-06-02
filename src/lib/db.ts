@@ -20,6 +20,7 @@ export function getDb() {
       phone TEXT,
       company TEXT,
       password_hash TEXT NOT NULL,
+      google_id TEXT UNIQUE,
       plan TEXT NOT NULL DEFAULT 'free',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -98,9 +99,13 @@ export function getDb() {
       external_id TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
     CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id, id DESC);
   `);
+  try {
+    db.exec("ALTER TABLE users ADD COLUMN google_id TEXT UNIQUE");
+  } catch {
+    // Column already exists
+  }
   return db;
 }
 
@@ -111,6 +116,7 @@ export type UserRow = {
   phone: string | null;
   company: string | null;
   password_hash: string;
+  google_id: string | null;
   plan: string;
   created_at: string;
 };
