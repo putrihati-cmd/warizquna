@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { authenticateApiKey } from "@/lib/api-auth";
 import { auditLog } from "@/lib/audit";
+import { parseBody } from "@/lib/request";
 import {
   SUPPORTED_EVENTS,
   createWebhook,
   listWebhooks,
   rowToJson,
+  validateWebhookUrl,
   type WebhookEvent,
 } from "@/lib/webhooks";
 
@@ -33,22 +35,22 @@ export async function POST(req: Request) {
   if (!auth.ok) {
     return NextResponse.json({ error: auth.error }, { status: auth.status, headers: auth.rateLimitHeaders });
   }
-  let json: unknown;
-  try {
-    json = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+
+  const parsed = await parseBody(req, Schema);
+  if (!parsed.success) return parsed.response;
+
+  const isValidUrl = await validateWebhookUrl(parsed.data.url);
+  if (!isValidUrl) {
+    return NextResponse.json({ error: "Invalid webhook URL or host not allowed" }, { status: 400 });
   }
-  const parsed = Schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Validation failed", issues: parsed.error.issues }, { status: 400 });
-  }
+
   const result = createWebhook({
     userId: auth.key.user_id,
     label: parsed.data.label,
     url: parsed.data.url,
     events: parsed.data.events as WebhookEvent[],
   });
+
   auditLog({
     user_id: auth.key.user_id,
     api_key_id: auth.key.id,

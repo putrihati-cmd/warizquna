@@ -22,7 +22,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' 'unsafe-inline' https://plausible.io https://*.plausible.io https://www.googletagmanager.com",
+      "script-src 'self' https://plausible.io https://*.plausible.io https://www.googletagmanager.com",
       "connect-src 'self' ws: wss: https://plausible.io https://*.plausible.io https://www.google-analytics.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",

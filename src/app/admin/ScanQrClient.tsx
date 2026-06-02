@@ -3,12 +3,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 
-type Props = { userName: string };
+type Props = { userName: string; token: string };
 type UiState = "idle" | "creating" | "waiting" | "ready" | "connected" | "error";
+
+interface QrPayload {
+  qrImage?: string;
+  sessionName?: string;
+}
+
+interface ReadyPayload {
+  sessionName?: string;
+  number?: string;
+}
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export default function ScanQrClient({ userName }: Props) {
+export default function ScanQrClient({ userName, token }: Props) {
   const [state, setState] = useState<UiState>("idle");
   const [qr, setQr] = useState<string | null>(null);
   const [sessionName, setSessionName] = useState<string | null>(null);
@@ -27,11 +37,15 @@ export default function ScanQrClient({ userName }: Props) {
   }, [state]);
 
   useEffect(() => {
-    const socket = io({ path: "/socket.io", transports: ["websocket", "polling"] });
+    const socket = io({
+      path: "/socket.io",
+      transports: ["websocket", "polling"],
+      auth: { token },
+    });
     socketRef.current = socket;
 
     socket.on("connect", () => setMessage((m) => (m === "Belum ada device aktif." ? "Realtime tersambung. Siap membuat QR." : m)));
-    socket.on("qr", (payload: any) => {
+    socket.on("qr", (payload: QrPayload) => {
       if (payload?.qrImage && (!sessionName || payload.sessionName === sessionName)) {
         setQr(payload.qrImage);
         setSessionName(payload.sessionName || sessionName);
@@ -41,7 +55,7 @@ export default function ScanQrClient({ userName }: Props) {
         setMessage("QR siap. Scan sebelum expired.");
       }
     });
-    socket.on("ready", (payload: any) => {
+    socket.on("ready", (payload: ReadyPayload) => {
       if (!sessionName || payload?.sessionName === sessionName) {
         setState("connected");
         setQr(null);
@@ -58,7 +72,7 @@ export default function ScanQrClient({ userName }: Props) {
       setMessage("Device terputus. Buat QR baru untuk reconnect.");
     });
     return () => { socket.disconnect(); };
-  }, [sessionName]);
+  }, [sessionName, token]);
 
   useEffect(() => {
     if (!countdown) return;
@@ -113,10 +127,11 @@ export default function ScanQrClient({ userName }: Props) {
       setMessage("Device dibuat. Mengambil QR...");
       setProgress(15);
       if (sn) pollQr(sn, token);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setState("error");
       setProgress(0);
-      setMessage(e?.message || "Gagal membuat device.");
+      const errMsg = e instanceof Error ? e.message : "Gagal membuat device.";
+      setMessage(errMsg);
     }
   }
 

@@ -47,9 +47,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const baseUrl = process.env.WA_GATEWAY_URL || "http://wa_gateway:3000";
-  const gwApiKey = process.env.WA_GATEWAY_API_KEY || "rizquna-api-key-2026";
-  const sessionName = process.env.WA_GATEWAY_SESSION || "session-1779285324109";
+  const baseUrl = process.env.WA_GATEWAY_URL;
+  const gwApiKey = process.env.WA_GATEWAY_API_KEY;
+  const sessionName = process.env.WA_GATEWAY_SESSION;
+
+  if (!baseUrl || !gwApiKey || !sessionName) {
+    return NextResponse.json(
+      { error: "Service Unavailable: Gateway keys or session not configured" },
+      { status: 503, headers: auth.rateLimitHeaders }
+    );
+  }
 
   // wa-gateway expects /api/send-message {sessionName, to, message}.
   // For text: send body directly. Template messages are flattened into a string fallback

@@ -65,8 +65,14 @@ export async function POST(req: Request) {
   tx();
 
   // Auto-login the user
-  const session = await signSession({ uid: user.id, email: user.email, name: user.name });
+  const session = await signSession({
+    uid: user.id,
+    email: user.email,
+    name: user.name,
+    pwdHashPart: hash.substring(0, 10),
+  });
   await setSessionCookie(session);
+
 
   return NextResponse.json({ ok: true });
 }

@@ -65,9 +65,19 @@ export default function ApiKeysPanel() {
 
   async function revoke(id: number) {
     if (!confirm("Revoke API key ini? Aplikasi yang masih memakainya akan menerima 401.")) return;
-    await fetch(`/api/keys?id=${id}`, { method: "DELETE" });
-    refresh();
+    setError(null);
+    try {
+      const res = await fetch(`/api/keys?id=${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json() as { error?: string };
+        throw new Error(data.error || "Gagal mencabut API key");
+      }
+      refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Gagal mencabut API key");
+    }
   }
+
 
   return (
     <div className="rounded-2xl p-6" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}>
@@ -84,6 +94,7 @@ export default function ApiKeysPanel() {
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           placeholder="Label, mis. 'Production WordPress'"
+          aria-label="Label API key baru"
           maxLength={40}
           className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
@@ -110,6 +121,7 @@ export default function ApiKeysPanel() {
             <input
               readOnly
               value={show ? revealed : "•".repeat(40)}
+              aria-label="Nilai API key baru"
               className="flex-1 px-3 py-2 rounded-lg text-sm font-mono"
               style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
             />

@@ -84,7 +84,9 @@ Tautan berlaku selama 30 menit. Jika Anda tidak meminta reset, abaikan email ini
   });
 
   // In dev (no SMTP), surface URL to caller for testing.
-  const debug = !isMailConfigured() ? { resetUrl, mode: "logged" as const } : undefined;
+  const debug = (process.env.NODE_ENV !== "production" && !isMailConfigured())
+    ? { resetUrl, mode: "logged" as const }
+    : undefined;
   return NextResponse.json({
     ok: true,
     info: "Jika email terdaftar, tautan reset akan dikirim.",

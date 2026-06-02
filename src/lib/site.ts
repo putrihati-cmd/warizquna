@@ -9,7 +9,7 @@ export const SITE = {
   email: "admin@rizquna.id",
   whatsapp: "6285119467138",
   company: "Rizquna",
-  year: 2026,
+  year: new Date().getFullYear(),
   city: "Indonesia",
   social: {
     github: "https://github.com/anomalyco",

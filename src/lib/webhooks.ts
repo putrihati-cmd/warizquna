@@ -1,5 +1,10 @@
 import crypto from "node:crypto";
+import dns from "node:dns";
+import { promisify } from "node:util";
 import { getDb } from "./db";
+import { encrypt, decryptSecret } from "./encryption";
+
+const lookupAsync = promisify(dns.lookup);
 
 export type WebhookRow = {
   id: number;
@@ -36,6 +41,14 @@ export function listWebhooks(userId: number): WebhookRow[] {
     .all({ uid: userId });
 }
 
+export function getWebhook(userId: number, id: number): WebhookRow | undefined {
+  return getDb()
+    .prepare<{ uid: number; id: number }, WebhookRow>(
+      `SELECT * FROM webhooks WHERE id = @id AND user_id = @uid`
+    )
+    .get({ uid: userId, id });
+}
+
 export function createWebhook(opts: {
   userId: number;
   label: string;
@@ -43,19 +56,21 @@ export function createWebhook(opts: {
   events: WebhookEvent[];
 }) {
   const secret = generateSecret();
+  const encryptedSecret = encrypt(secret);
   const result = getDb()
     .prepare(
       `INSERT INTO webhooks (user_id, label, url, secret, events) VALUES (?, ?, ?, ?, ?)`
     )
-    .run(opts.userId, opts.label, opts.url, secret, JSON.stringify(opts.events));
+    .run(opts.userId, opts.label, opts.url, encryptedSecret, JSON.stringify(opts.events));
   return { id: Number(result.lastInsertRowid), secret };
 }
 
 export function rotateSecret(userId: number, id: number) {
   const secret = generateSecret();
+  const encryptedSecret = encrypt(secret);
   const r = getDb()
     .prepare(`UPDATE webhooks SET secret = ? WHERE id = ? AND user_id = ?`)
-    .run(secret, id, userId);
+    .run(encryptedSecret, id, userId);
   if (r.changes === 0) return null;
   return secret;
 }
@@ -110,7 +125,13 @@ export function rowToJson(r: WebhookRow) {
     id: r.id,
     label: r.label,
     url: r.url,
-    events: JSON.parse(r.events) as string[],
+    events: (() => {
+      try {
+        return JSON.parse(r.events) as string[];
+      } catch {
+        return [];
+      }
+    })(),
     enabled: !!r.enabled,
     last_triggered_at: r.last_triggered_at,
     last_status: r.last_status,
@@ -123,14 +144,77 @@ export function signPayload(secret: string, body: string, timestamp: number) {
   return crypto.createHmac("sha256", secret).update(data).digest("hex");
 }
 
+export function isPrivateIp(ip: string): boolean {
+  if (ip.startsWith("127.") || ip.startsWith("10.") || ip.startsWith("169.254.") || ip === "0.0.0.0") {
+    return true;
+  }
+  if (ip.startsWith("192.168.")) {
+    return true;
+  }
+  if (ip.startsWith("172.")) {
+    const parts = ip.split(".");
+    if (parts.length >= 2) {
+      const second = parseInt(parts[1], 10);
+      if (second >= 16 && second <= 31) return true;
+    }
+  }
+  const ipLower = ip.toLowerCase();
+  if (ipLower === "::1" || ipLower === "0:0:0:0:0:0:0:1") {
+    return true;
+  }
+  if (ipLower.startsWith("fe80:") || ipLower.startsWith("fc00:") || ipLower.startsWith("fd00:")) {
+    return true;
+  }
+  return false;
+}
+
+export async function validateWebhookUrl(urlStr: string): Promise<boolean> {
+  try {
+    const url = new URL(urlStr);
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return false;
+    }
+    const hostname = url.hostname.toLowerCase();
+    
+    if (hostname === "localhost" || hostname.endsWith(".local") || hostname.endsWith(".internal") || hostname.endsWith(".lan")) {
+      return false;
+    }
+    
+    const isIp = /^[0-9a-f.:]+$/i.test(hostname);
+    if (isIp) {
+      return !isPrivateIp(hostname);
+    }
+    
+    try {
+      const lookupResult = await lookupAsync(hostname);
+      if (isPrivateIp(lookupResult.address)) {
+        return false;
+      }
+    } catch {
+      return false;
+    }
+    
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function deliverWebhook(opts: {
   webhook: WebhookRow;
   event: WebhookEvent;
   payload: Record<string, unknown>;
 }) {
+  const isValid = await validateWebhookUrl(opts.webhook.url);
+  if (!isValid) {
+    recordWebhookDelivery(opts.webhook.id, 400);
+    return 400;
+  }
+
   const ts = Math.floor(Date.now() / 1000);
   const body = JSON.stringify({ event: opts.event, timestamp: ts, data: opts.payload });
-  const sig = signPayload(opts.webhook.secret, body, ts);
+  const plaintextSecret = decryptSecret(opts.webhook.secret);
+  const sig = signPayload(plaintextSecret, body, ts);
   let status = 0;
   try {
     const res = await fetch(opts.webhook.url, {

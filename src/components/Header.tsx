@@ -1,18 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, LayoutDashboard } from "lucide-react";
 import { NAV } from "@/lib/site";
 import { Logo } from "./Logo";
 
-export function Header({ user }: { user?: { name: string; email: string } | null }) {
+export function Header({ user: initialUser }: { user?: { name: string; email: string } | null }) {
+  const [user, setUser] = useState<{ name: string; email: string } | null | undefined>(initialUser);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (initialUser !== undefined) {
+      setUser(initialUser);
+      return;
+    }
+    fetch("/api/auth/session")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setUser(data?.user ?? null))
+      .catch(() => setUser(null));
+  }, [initialUser]);
+
   return (
     <header
       className="sticky top-0 z-50 backdrop-blur-md"
-      style={{ background: "rgba(255,255,255,0.85)", borderBottom: "1px solid var(--border-light)" }}
+      style={{ background: "var(--header-bg)", borderBottom: "1px solid var(--border-light)" }}
     >
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Logo />
         <nav className="hidden md:flex items-center gap-7">

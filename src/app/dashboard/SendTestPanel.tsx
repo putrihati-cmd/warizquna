@@ -48,6 +48,7 @@ export default function SendTestPanel() {
           value={to}
           onChange={(e) => setTo(e.target.value)}
           placeholder="Nomor tujuan, mis. 6281234567890"
+          aria-label="Nomor telepon penerima"
           required
           pattern="[0-9]{8,18}"
           className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
@@ -58,6 +59,7 @@ export default function SendTestPanel() {
           onChange={(e) => setText(e.target.value)}
           rows={3}
           required
+          aria-label="Isi pesan tes"
           maxLength={1000}
           className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}

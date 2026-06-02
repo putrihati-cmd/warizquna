@@ -35,9 +35,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Invalid input" }, { status: 400 });
   }
 
-  const apiKey = process.env.WA_GATEWAY_API_KEY || "rizquna-api-key-2026";
-  const baseUrl = process.env.WA_GATEWAY_URL || "http://wa_gateway:3000";
-  const sessionName = process.env.WA_GATEWAY_SESSION || "session-1779285324109";
+  const apiKey = process.env.WA_GATEWAY_API_KEY;
+  const baseUrl = process.env.WA_GATEWAY_URL;
+  const sessionName = process.env.WA_GATEWAY_SESSION;
+
+  if (!apiKey || !baseUrl || !sessionName) {
+    return NextResponse.json(
+      { error: "Service Unavailable: Gateway keys or session not configured" },
+      { status: 503 }
+    );
+  }
 
   try {
     const res = await fetch(`${baseUrl}/api/send-message`, {

@@ -111,6 +111,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nama"
+          aria-label="Nama kontak"
           className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
         />
@@ -119,6 +120,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Nomor (8-18 digit)"
+          aria-label="Nomor telepon kontak"
           pattern="[0-9]{8,18}"
           className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
@@ -127,6 +129,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           placeholder="Tag (pisah koma)"
+          aria-label="Tag kontak"
           className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
         />
@@ -147,6 +150,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter nama / nomor / tag..."
+          aria-label="Filter kontak"
           className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
           style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
         />
@@ -184,6 +188,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
                     <input
                       value={editValues.name}
                       onChange={(e) => setEditValues((s) => ({ ...s, name: e.target.value }))}
+                      aria-label="Edit nama kontak"
                       className="w-full px-2 py-1 rounded text-sm"
                       style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
                     />
@@ -196,6 +201,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
                     <input
                       value={editValues.phone}
                       onChange={(e) => setEditValues((s) => ({ ...s, phone: e.target.value }))}
+                      aria-label="Edit nomor telepon kontak"
                       className="w-full px-2 py-1 rounded text-sm font-mono"
                       style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
                     />
@@ -208,6 +214,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
                     <input
                       value={editValues.tags}
                       onChange={(e) => setEditValues((s) => ({ ...s, tags: e.target.value }))}
+                      aria-label="Edit tag kontak"
                       className="w-full px-2 py-1 rounded text-sm"
                       style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
                     />

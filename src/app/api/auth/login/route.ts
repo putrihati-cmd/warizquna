@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getDb, type UserRow } from "@/lib/db";
 import { signSession, setSessionCookie } from "@/lib/auth";
 import { rateLimit, clientIpFromRequest } from "@/lib/rate-limit";
+import { auditLog } from "@/lib/audit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -43,10 +44,29 @@ export async function POST(req: Request) {
   }
   const ok = await bcrypt.compare(parsed.data.password, user.password_hash);
   if (!ok) {
+    auditLog({
+      user_id: user.id,
+      action: "auth.login",
+      status: "fail",
+      message: "wrong password",
+    });
     return NextResponse.json({ error: "Email atau kata sandi salah" }, { status: 401 });
   }
 
-  const token = await signSession({ uid: user.id, email: user.email, name: user.name });
+  const token = await signSession({
+    uid: user.id,
+    email: user.email,
+    name: user.name,
+    pwdHashPart: user.password_hash.substring(0, 10),
+  });
   await setSessionCookie(token);
+
+  auditLog({
+    user_id: user.id,
+    action: "auth.login",
+    status: "ok",
+  });
+
   return NextResponse.json({ ok: true });
 }
+

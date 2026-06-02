@@ -16,6 +16,7 @@ export type SessionPayload = {
   uid: number;
   email: string;
   name: string;
+  pwdHashPart?: string;
 };
 
 export async function signSession(payload: SessionPayload, maxAgeSeconds = 60 * 60 * 24 * 7) {
@@ -26,14 +27,40 @@ export async function signSession(payload: SessionPayload, maxAgeSeconds = 60 * 
     .sign(getSecret());
 }
 
-export async function verifySession(token: string): Promise<SessionPayload | null> {
+export async function verifySessionCryptographically(token: string): Promise<SessionPayload | null> {
   try {
     const { payload } = await jwtVerify(token, getSecret(), { algorithms: [ALG] });
-    return { uid: payload.uid as number, email: payload.email as string, name: payload.name as string };
+    return {
+      uid: payload.uid as number,
+      email: payload.email as string,
+      name: payload.name as string,
+      pwdHashPart: payload.pwdHashPart as string | undefined,
+    };
   } catch {
     return null;
   }
 }
+
+export async function verifySession(token: string): Promise<SessionPayload | null> {
+  const payload = await verifySessionCryptographically(token);
+  if (!payload) return null;
+
+  try {
+    // Dynamic import to avoid loading better-sqlite3 in Edge/middleware runtime
+    const { getDb } = await import("./db");
+    const db = getDb();
+    const user = db.prepare("SELECT password_hash FROM users WHERE id = ?").get(payload.uid) as { password_hash: string } | undefined;
+    if (!user) return null;
+
+    const expectedPart = user.password_hash.substring(0, 10);
+    if (payload.pwdHashPart !== expectedPart) return null;
+
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
 
 export async function getSession(): Promise<SessionPayload | null> {
   const c = await cookies();

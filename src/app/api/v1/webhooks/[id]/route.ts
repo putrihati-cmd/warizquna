@@ -5,12 +5,14 @@ import { auditLog } from "@/lib/audit";
 import {
   SUPPORTED_EVENTS,
   deleteWebhook,
-  listWebhooks,
+  getWebhook,
   rotateSecret,
   rowToJson,
   updateWebhook,
+  validateWebhookUrl,
   type WebhookEvent,
 } from "@/lib/webhooks";
+import { parseBody } from "@/lib/request";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -19,10 +21,6 @@ function readId(p: { id: string }) {
   const id = Number(p.id);
   if (!Number.isFinite(id)) return null;
   return id;
-}
-
-function getOwned(userId: number, id: number) {
-  return listWebhooks(userId).find((w) => w.id === id);
 }
 
 const PatchSchema = z.object({
@@ -38,7 +36,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
     return NextResponse.json({ error: auth.error }, { status: auth.status, headers: auth.rateLimitHeaders });
   const id = readId(await ctx.params);
   if (!id) return NextResponse.json({ error: "Bad id" }, { status: 400 });
-  const row = getOwned(auth.key.user_id, id);
+  const row = getWebhook(auth.key.user_id, id);
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json({ webhook: rowToJson(row) }, { headers: auth.rateLimitHeaders });
 }
@@ -50,16 +48,19 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   const id = readId(await ctx.params);
   if (!id) return NextResponse.json({ error: "Bad id" }, { status: 400 });
 
-  let json: unknown;
-  try {
-    json = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  const existing = getWebhook(auth.key.user_id, id);
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const parsed = await parseBody(req, PatchSchema);
+  if (!parsed.success) return parsed.response;
+
+  if (parsed.data.url !== undefined) {
+    const isValidUrl = await validateWebhookUrl(parsed.data.url);
+    if (!isValidUrl) {
+      return NextResponse.json({ error: "Invalid webhook URL or host not allowed" }, { status: 400 });
+    }
   }
-  const parsed = PatchSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Validation failed", issues: parsed.error.issues }, { status: 400 });
-  }
+
   const r = updateWebhook({
     userId: auth.key.user_id,
     id,
@@ -77,7 +78,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     target: String(id),
     status: "ok",
   });
-  const row = getOwned(auth.key.user_id, id);
+  const row = getWebhook(auth.key.user_id, id);
   return NextResponse.json({ ok: true, webhook: row ? rowToJson(row) : null }, { headers: auth.rateLimitHeaders });
 }
 

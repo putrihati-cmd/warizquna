@@ -5,7 +5,6 @@ import { Footer } from "@/components/Footer";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd, organizationLd, websiteLd, softwareLd } from "@/lib/schema";
 import { SITE } from "@/lib/site";
-import { getSession } from "@/lib/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -26,15 +25,13 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession().catch(() => null);
-  const user = session ? { name: session.name, email: session.email } : null;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
       <body>
         <JsonLd data={[organizationLd(), websiteLd(), softwareLd()]} />
         <Analytics />
-        <Header user={user} />
+        <Header />
         <main>{children}</main>
         <Footer />
       </body>

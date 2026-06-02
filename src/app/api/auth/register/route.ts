@@ -57,7 +57,13 @@ export async function POST(req: Request) {
   });
 
   const uid = Number(result.lastInsertRowid);
-  const token = await signSession({ uid, email: parsed.data.email, name: parsed.data.name });
+  const token = await signSession({
+    uid,
+    email: parsed.data.email,
+    name: parsed.data.name,
+    pwdHashPart: hash.substring(0, 10),
+  });
   await setSessionCookie(token);
   return NextResponse.json({ ok: true, uid });
+
 }

@@ -18,9 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/changelog",
     "/privacy-policy",
     "/terms-of-service",
-    "/login",
-    "/register",
-    "/forgot-password",
   ];
   const lastModified = new Date();
   const base_routes = routes.map((path) => ({

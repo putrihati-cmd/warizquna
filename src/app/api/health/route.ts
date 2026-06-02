@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -11,7 +12,7 @@ export async function GET() {
   let error: string | null = null;
   try {
     const db = getDb();
-    const row = db.prepare<unknown[], { c: number }>("SELECT COUNT(*) as c FROM users").get();
+    const row = db.prepare<[], { c: number }>("SELECT COUNT(*) as c FROM users").get();
     userCount = row?.c ?? 0;
     dbOk = true;
   } catch (e) {
@@ -28,6 +29,14 @@ export async function GET() {
   }
 
   const ok = dbOk;
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json(
+      { status: ok ? "ok" : "degraded" },
+      { status: ok ? 200 : 503 }
+    );
+  }
+
   return NextResponse.json(
     {
       status: ok ? "ok" : "degraded",

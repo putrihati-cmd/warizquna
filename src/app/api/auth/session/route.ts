@@ -1,0 +1,18 @@
+import { getSession } from "@/lib/auth";
+import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ user: null });
+  }
+  return NextResponse.json({
+    user: {
+      name: session.name,
+      email: session.email,
+    },
+  });
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { getSession, SESSION_COOKIE } from "@/lib/auth";
 import ScanQrClient from "./ScanQrClient";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,10 @@ export const metadata = { title: "Admin WhatsApp | Rizquna" };
 export default async function AdminPage() {
   const session = await getSession();
   if (!session) redirect("/login?redirect=/admin");
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value || "";
+
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#dcfce7_0,transparent_34%),linear-gradient(180deg,#f8fafc,#eefdf4)] text-slate-950">
       <header className="border-b border-emerald-100/80 bg-white/75 backdrop-blur-xl">
@@ -54,7 +59,7 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        <ScanQrClient userName={session.name || session.email} />
+        <ScanQrClient userName={session.name || session.email} token={token} />
       </section>
     </main>
   );

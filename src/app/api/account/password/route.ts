@@ -47,6 +47,17 @@ export async function POST(req: Request) {
   const hash = await bcrypt.hash(parsed.data.next, 12);
   db.prepare("UPDATE users SET password_hash = ? WHERE id = ?").run(hash, user.id);
 
+  // Re-sign session to keep current session logged in
+  const { signSession, setSessionCookie } = await import("@/lib/auth");
+  const newToken = await signSession({
+    uid: user.id,
+    email: user.email,
+    name: user.name,
+    pwdHashPart: hash.substring(0, 10),
+  });
+  await setSessionCookie(newToken);
+
   auditLog({ user_id: session.uid, action: "account.change_password", status: "ok" });
   return NextResponse.json({ ok: true });
+
 }
