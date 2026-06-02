@@ -102,10 +102,11 @@ export function getDb() {
     CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id, id DESC);
   `);
   try {
-    db.exec("ALTER TABLE users ADD COLUMN google_id TEXT UNIQUE");
+    db.exec("ALTER TABLE users ADD COLUMN google_id TEXT");
   } catch {
     // Column already exists
   }
+  db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id) WHERE google_id IS NOT NULL");
   return db;
 }
 
