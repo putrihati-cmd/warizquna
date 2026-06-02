@@ -15,11 +15,13 @@ export async function GET(req: Request) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || `${url.protocol}//${url.host}`;
 
   const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value ? 'present' : 'empty'}`);
+  console.log("[Google OAuth Callback] Received cookies list:", allCookies);
   const oauthState = cookieStore.get("oauth_state")?.value;
   cookieStore.delete("oauth_state");
 
   if (!oauthState || oauthState !== state) {
-    console.error("Google OAuth state verification failed.");
+    console.error(`Google OAuth state verification failed. URL state: ${state}, Cookie state: ${oauthState}`);
     return NextResponse.redirect(`${appUrl}/login?error=csrf_error`);
   }
 
