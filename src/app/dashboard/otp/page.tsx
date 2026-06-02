@@ -1,9 +1,88 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+
 export const dynamic = "force-dynamic";
 export const metadata = { title: "OTP Dashboard | Rizquna" };
-export default async function OtpDashboard(){
- const s=await getSession(); if(!s) redirect("/login?redirect=/dashboard/otp");
- return <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-950"><section className="mx-auto max-w-5xl space-y-6"><div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200"><p className="text-sm font-bold text-emerald-700">Rizquna Messaging</p><h1 className="mt-2 text-4xl font-black">OTP Center</h1><p className="mt-3 max-w-2xl text-slate-600">OTP sudah tersedia di project WA sebagai unified API. API OTP sudah masuk domain WA. Console legacy dibungkus dalam unified shell sementara DB/auth dimigrasi penuh.</p><div className="mt-6 flex flex-wrap gap-3"><a href="/dashboard/otp/legacy" className="rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-black text-white">Buka Console OTP</a><Link href="/docs/otp" className="rounded-2xl bg-slate-100 px-5 py-3 text-sm font-black text-slate-700">Docs OTP API</Link><Link href="/dashboard" className="rounded-2xl bg-white px-5 py-3 text-sm font-black text-slate-700 ring-1 ring-slate-200">Dashboard WA</Link></div></div><div className="grid gap-4 md:grid-cols-3">{[["Send","POST /api/otp/send"],["Verify","POST /api/otp/verify"],["Status","GET /api/otp/status/:id"]].map(([a,b])=><div key={a} className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200"><div className="font-black">{a}</div><code className="mt-3 block rounded-xl bg-slate-950 p-3 text-xs text-emerald-300">{b}</code></div>)}</div></section></main>;
+
+export default async function OtpDashboard() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login?redirect=/dashboard/otp");
+  }
+
+  const routes = [
+    { title: "Send", method: "POST /api/otp/send" },
+    { title: "Verify", method: "POST /api/otp/verify" },
+    { title: "Status", method: "GET /api/otp/status/:id" },
+  ];
+
+  return (
+    <main
+      className="min-h-screen px-4 py-10"
+      style={{ background: "var(--bg-secondary)", color: "var(--text-primary)" }}
+    >
+      <section className="mx-auto max-w-5xl space-y-6 animate-fade-in">
+        <div
+          className="rounded-3xl p-8 shadow-sm"
+          style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+        >
+          <p className="text-sm font-bold" style={{ color: "var(--rizquna-green)" }}>
+            Rizquna Messaging
+          </p>
+          <h1 className="mt-2 text-4xl font-black">OTP Center</h1>
+          <p className="mt-3 max-w-2xl text-sm" style={{ color: "var(--text-secondary)" }}>
+            OTP sudah tersedia di project WA sebagai unified API. API OTP sudah masuk domain WA. Console
+            legacy dibungkus dalam unified shell sementara DB/auth dimigrasi penuh.
+          </p>
+          
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="/dashboard/otp/legacy"
+              className="rounded-2xl px-5 py-3 text-sm font-black text-white hover:opacity-95 transition-opacity"
+              style={{ background: "var(--rizquna-green)" }}
+            >
+              Buka Console OTP
+            </a>
+            <Link
+              href="/docs/otp"
+              className="rounded-2xl px-5 py-3 text-sm font-black transition-colors"
+              style={{ background: "var(--bg-surface)", color: "var(--text-secondary)" }}
+            >
+              Docs OTP API
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-2xl px-5 py-3 text-sm font-black transition-colors"
+              style={{
+                background: "var(--bg-card)",
+                color: "var(--text-secondary)",
+                border: "1px solid var(--border-light)",
+              }}
+            >
+              Dashboard WA
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {routes.map((r) => (
+            <div
+              key={r.title}
+              className="rounded-3xl p-6 shadow-sm"
+              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+            >
+              <div className="font-black text-lg">{r.title}</div>
+              <code
+                className="mt-3 block rounded-xl p-3 text-xs overflow-x-auto font-mono"
+                style={{ background: "var(--bg-secondary)", color: "var(--rizquna-green)" }}
+              >
+                {r.method}
+              </code>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
 }

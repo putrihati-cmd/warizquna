@@ -37,7 +37,7 @@ function Inner() {
         setLoading(false);
         return;
       }
-      router.push("/dashboard");
+      router.push("/login?reset=success");
       router.refresh();
     } catch {
       setError("Tidak dapat terhubung ke server");

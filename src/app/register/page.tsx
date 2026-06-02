@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { getSession } from "@/lib/auth";
 import RegisterClient from "./RegisterClient";
 
@@ -13,5 +14,9 @@ export const dynamic = "force-dynamic";
 export default async function RegisterPage() {
   const session = await getSession();
   if (session) redirect("/dashboard");
-  return <RegisterClient />;
+  return (
+    <Suspense fallback={null}>
+      <RegisterClient />
+    </Suspense>
+  );
 }

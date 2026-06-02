@@ -85,4 +85,24 @@ export async function clearSessionCookie() {
   c.delete(COOKIE);
 }
 
+export async function signPendingLinkToken(payload: { email: string; googleId: string }, maxAgeSeconds = 600) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: ALG })
+    .setIssuedAt()
+    .setExpirationTime(`${maxAgeSeconds}s`)
+    .sign(getSecret());
+}
+
+export async function verifyPendingLinkToken(token: string): Promise<{ email: string; googleId: string } | null> {
+  try {
+    const { payload } = await jwtVerify(token, getSecret(), { algorithms: [ALG] });
+    return {
+      email: payload.email as string,
+      googleId: payload.googleId as string,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export const SESSION_COOKIE = COOKIE;

@@ -53,8 +53,16 @@ export async function PATCH(req: Request) {
     session.uid
   );
 
+  const u = db.prepare("SELECT password_hash FROM users WHERE id = ?").get(session.uid) as { password_hash: string } | undefined;
+  const pwdHashPart = u?.password_hash ? u.password_hash.substring(0, 10) : "google_auth";
+
   // Refresh session token (name may have changed)
-  const token = await signSession({ uid: session.uid, email: session.email, name: parsed.data.name });
+  const token = await signSession({
+    uid: session.uid,
+    email: session.email,
+    name: parsed.data.name,
+    pwdHashPart,
+  });
   await setSessionCookie(token);
 
   auditLog({

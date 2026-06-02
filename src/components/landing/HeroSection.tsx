@@ -23,8 +23,7 @@ export function HeroSection() {
           
           <p className="max-w-2xl mx-auto text-base sm:text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             Platform WhatsApp Business API yang dirancang khusus untuk Developer & Pebisnis Indonesia. Akses
-            fitur inti <strong>gratis selamanya</strong>, nikmati pengiriman pesan{" "}
-            <strong>unlimited tanpa kuota</strong>, dan tingkatkan konversi penjualan Anda.
+            fitur inti <strong>gratis selamanya</strong>, hubungkan nomor Anda dengan mudah, dan tingkatkan konversi penjualan Anda.
           </p>
 
           <div className="flex flex-wrap justify-center gap-3">

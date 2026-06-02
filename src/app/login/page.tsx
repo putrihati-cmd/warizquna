@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { getSession } from "@/lib/auth";
 import LoginClient from "./LoginClient";
 
@@ -13,5 +14,9 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage() {
   const session = await getSession();
   if (session) redirect("/dashboard");
-  return <LoginClient />;
+  return (
+    <Suspense fallback={null}>
+      <LoginClient />
+    </Suspense>
+  );
 }

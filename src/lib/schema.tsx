@@ -41,14 +41,9 @@ export function softwareLd() {
     description: SITE.description,
     offers: [
       { "@type": "Offer", name: "Free", price: "0", priceCurrency: "IDR" },
-      { "@type": "Offer", name: "Business", price: "25000", priceCurrency: "IDR" },
-      { "@type": "Offer", name: "Professional", price: "45000", priceCurrency: "IDR" },
+      { "@type": "Offer", name: "Starter", price: "99000", priceCurrency: "IDR" },
+      { "@type": "Offer", name: "Growth", price: "249000", priceCurrency: "IDR" },
     ],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "120",
-    },
   };
 }
 

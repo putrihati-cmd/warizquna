@@ -56,9 +56,9 @@ export default function PasswordForm() {
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
-        <Field label="Saat ini" value={current} onChange={setCurrent} required />
-        <Field label="Baru (min. 8)" value={next} onChange={setNext} required minLength={8} />
-        <Field label="Konfirmasi baru" value={confirm} onChange={setConfirm} required minLength={8} />
+        <Field id="current-password" label="Saat ini" value={current} onChange={setCurrent} required />
+        <Field id="new-password" label="Baru (min. 8)" value={next} onChange={setNext} required minLength={8} />
+        <Field id="confirm-password" label="Konfirmasi baru" value={confirm} onChange={setConfirm} required minLength={8} />
       </div>
 
       {msg && (
@@ -80,12 +80,14 @@ export default function PasswordForm() {
 }
 
 function Field({
+  id,
   label,
   value,
   onChange,
   required,
   minLength,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -94,8 +96,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="text-sm font-semibold block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-sm font-semibold block mb-1.5">{label}</label>
       <input
+        id={id}
         type="password"
         value={value}
         onChange={(e) => onChange(e.target.value)}

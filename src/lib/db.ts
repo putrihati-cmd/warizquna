@@ -99,6 +99,7 @@ export function getDb() {
       external_id TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
     CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id, id DESC);
   `);
   try {

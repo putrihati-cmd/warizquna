@@ -1,17 +1,52 @@
-import type { Metadata } from "next";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Mail, Phone, MapPin, MessageCircle, AlertCircle, CheckCircle } from "lucide-react";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Kontak",
-  description: "Hubungi tim Rizquna untuk pertanyaan, demo, atau dukungan teknis.",
-};
-
 export default function ContactPage() {
+  const [nama, setNama] = useState("");
+  const [email, setEmail] = useState("");
+  const [subjek, setSubjek] = useState("");
+  const [pesan, setPesan] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const waLink = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent("Halo Rizquna, saya tertarik dengan WhatsApp Gateway.")}`;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nama, email, subjek, pesan }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Gagal mengirim pesan");
+      } else {
+        setSuccess(true);
+        setNama("");
+        setEmail("");
+        setSubjek("");
+        setPesan("");
+      }
+    } catch {
+      setError("Tidak dapat terhubung ke server");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
-      <section className="pt-16 pb-12">
+      <section className="pt-16 pb-12 animate-fade-in">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--rizquna-green)" }}>
             Kontak
@@ -41,36 +76,76 @@ export default function ContactPage() {
           </div>
 
           <form
-            action={`mailto:${SITE.email}`}
-            method="post"
-            encType="text/plain"
+            onSubmit={handleSubmit}
             className="rounded-2xl p-6 space-y-4"
             style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
           >
             <h2 className="text-xl font-bold">Kirim Pesan</h2>
-            <Field label="Nama" name="nama" type="text" required />
-            <Field label="Email" name="email" type="email" required />
-            <Field label="Subjek" name="subjek" type="text" required />
+            
+            <Field
+              id="nama"
+              label="Nama"
+              name="nama"
+              type="text"
+              required
+              value={nama}
+              onChange={setNama}
+            />
+            <Field
+              id="email"
+              label="Email"
+              name="email"
+              type="email"
+              required
+              value={email}
+              onChange={setEmail}
+            />
+            <Field
+              id="subjek"
+              label="Subjek"
+              name="subjek"
+              type="text"
+              required
+              value={subjek}
+              onChange={setSubjek}
+            />
+
             <div>
-              <label className="text-sm font-semibold block mb-1.5">Pesan</label>
+              <label htmlFor="pesan" className="text-sm font-semibold block mb-1.5">Pesan</label>
               <textarea
+                id="pesan"
                 name="pesan"
                 rows={5}
                 required
+                value={pesan}
+                onChange={(e) => setPesan(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-colors focus:border-[var(--rizquna-green)]"
                 style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
               />
             </div>
+
+            {error && (
+              <div className="flex items-center gap-2 p-3 rounded-xl text-sm font-semibold" style={{ background: "rgba(239, 68, 68, 0.1)", color: "#EF4444" }}>
+                <AlertCircle className="w-4.5 h-4.5 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {success && (
+              <div className="flex items-center gap-2 p-3 rounded-xl text-sm font-semibold" style={{ background: "rgba(34, 197, 94, 0.15)", color: "var(--rizquna-green)" }}>
+                <CheckCircle className="w-4.5 h-4.5 shrink-0" />
+                <span>Pesan Anda berhasil dikirim! Kami akan menghubungi Anda segera.</span>
+              </div>
+            )}
+
             <button
               type="submit"
-              className="w-full py-3 rounded-xl text-white font-bold text-sm transition-all hover:-translate-y-0.5 shadow-md"
+              disabled={loading}
+              className="w-full py-3 rounded-xl text-white font-bold text-sm transition-all hover:-translate-y-0.5 shadow-md disabled:opacity-60"
               style={{ background: "var(--rizquna-green)" }}
             >
-              Kirim
+              {loading ? "Mengirim..." : "Kirim"}
             </button>
-            <p className="text-xs text-center" style={{ color: "var(--text-tertiary)" }}>
-              Form ini akan membuka aplikasi email default Anda.
-            </p>
           </form>
         </div>
       </section>
@@ -110,23 +185,32 @@ function ContactItem({
 }
 
 function Field({
+  id,
   label,
   name,
   type,
   required,
+  value,
+  onChange,
 }: {
+  id: string;
   label: string;
   name: string;
   type: string;
   required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
 }) {
   return (
     <div>
-      <label className="text-sm font-semibold block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-sm font-semibold block mb-1.5">{label}</label>
       <input
+        id={id}
         type={type}
         name={name}
         required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-colors focus:border-[var(--rizquna-green)]"
         style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
       />

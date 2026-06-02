@@ -83,8 +83,15 @@ Tautan berlaku selama 30 menit. Jika Anda tidak meminta reset, abaikan email ini
     message: mail.ok ? `mode=${mail.mode}` : mail.error,
   });
 
+  const url = new URL(req.url);
+  const isLocalhost =
+    url.hostname === "localhost" ||
+    url.hostname === "127.0.0.1" ||
+    url.hostname === "::1" ||
+    url.hostname.endsWith(".localhost");
+
   // In dev (no SMTP), surface URL to caller for testing.
-  const debug = (process.env.NODE_ENV !== "production" && !isMailConfigured())
+  const debug = (process.env.NODE_ENV === "development" && isLocalhost && !isMailConfigured())
     ? { resetUrl, mode: "logged" as const }
     : undefined;
   return NextResponse.json({

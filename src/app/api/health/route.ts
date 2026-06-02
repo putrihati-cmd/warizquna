@@ -30,7 +30,9 @@ export async function GET() {
 
   const ok = dbOk;
   const session = await getSession();
-  if (!session) {
+  const isAdmin = session?.email === (process.env.ADMIN_EMAIL || "admin@rizquna.id");
+
+  if (!session || !isAdmin) {
     return NextResponse.json(
       { status: ok ? "ok" : "degraded" },
       { status: ok ? 200 : 503 }

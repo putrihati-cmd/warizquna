@@ -49,10 +49,10 @@ export default function ProfileForm({ defaultValues }: { defaultValues: Defaults
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Nama Lengkap" value={v.name} onChange={(x) => set("name", x)} required />
-        <Field label="Email" value={v.email} onChange={() => undefined} disabled />
-        <Field label="Nomor WhatsApp" value={v.phone} onChange={(x) => set("phone", x)} />
-        <Field label="Perusahaan" value={v.company} onChange={(x) => set("company", x)} />
+        <Field id="name" label="Nama Lengkap" value={v.name} onChange={(x) => set("name", x)} required />
+        <Field id="email" label="Email" value={v.email} onChange={() => undefined} disabled />
+        <Field id="phone" label="Nomor WhatsApp" value={v.phone} onChange={(x) => set("phone", x)} />
+        <Field id="company" label="Perusahaan" value={v.company} onChange={(x) => set("company", x)} />
       </div>
 
       {msg && (
@@ -75,12 +75,14 @@ export default function ProfileForm({ defaultValues }: { defaultValues: Defaults
 }
 
 function Field({
+  id,
   label,
   value,
   onChange,
   required,
   disabled,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -89,8 +91,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="text-sm font-semibold block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-sm font-semibold block mb-1.5">{label}</label>
       <input
+        id={id}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}

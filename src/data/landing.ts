@@ -1,7 +1,7 @@
 import { BarChart3, Bot, Inbox, Send } from "lucide-react";
 
 export const FEATURES = [
-  { icon: Send, title: "Kirim Pesan", desc: "Kirim notifikasi, OTP, dan pesan follow-up via WhatsApp API resmi." },
+  { icon: Send, title: "Kirim Pesan", desc: "Kirim notifikasi, OTP, dan pesan follow-up via WhatsApp API Gateway." },
   { icon: Inbox, title: "Inbox Terpusat", desc: "Kelola percakapan pelanggan dari satu dashboard yang mudah digunakan." },
   { icon: Bot, title: "Otomasi", desc: "Hubungkan webhook dan REST API untuk alur kerja otomatis." },
   { icon: BarChart3, title: "Analytics", desc: "Pantau status pengiriman, performa pesan, dan aktivitas pelanggan." },
