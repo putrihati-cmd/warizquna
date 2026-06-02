@@ -30,36 +30,4 @@ export function SectionHead({
   );
 }
 
-export function PageHero({
-  title,
-  subtitle,
-  highlight,
-}: {
-  title: string;
-  subtitle?: string;
-  highlight?: string;
-}) {
-  return (
-    <section className="relative overflow-hidden">
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-          {title}
-          {highlight && (
-            <>
-              <br />
-              <span className="gradient-text">{highlight}</span>
-            </>
-          )}
-        </h1>
-        {subtitle && (
-          <p
-            className="mt-6 text-base sm:text-lg leading-relaxed"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {subtitle}
-          </p>
-        )}
-      </div>
-    </section>
-  );
-}
+
