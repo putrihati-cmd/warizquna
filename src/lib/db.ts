@@ -127,6 +127,15 @@ export function getDb() {
     // Column already exists
   }
   db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id) WHERE google_id IS NOT NULL");
+
+  // Auto-cleanup: purge old records to prevent unbounded growth
+  try {
+    db.exec("DELETE FROM audit_logs WHERE created_at < datetime('now', '-90 days')");
+    db.exec("DELETE FROM messages WHERE created_at < datetime('now', '-60 days')");
+  } catch {
+    // Non-critical: cleanup can fail silently
+  }
+
   return db;
 }
 

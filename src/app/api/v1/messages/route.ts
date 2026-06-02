@@ -148,7 +148,7 @@ export async function POST(req: Request) {
       message: `Gateway ${upstreamStatus}: ${upstreamBody.slice(0, 120)}`,
     });
     return NextResponse.json(
-      { error: `Gateway ${upstreamStatus}`, body: upstreamBody },
+      { error: "Gateway error", status_code: upstreamStatus },
       { status: 502 }
     );
   }
