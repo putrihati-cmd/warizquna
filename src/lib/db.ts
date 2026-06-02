@@ -101,6 +101,19 @@ export function getDb() {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
     CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id, id DESC);
+
+    CREATE TABLE IF NOT EXISTS transactions (
+      id TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      amount INTEGER NOT NULL,
+      plan TEXT NOT NULL,
+      status TEXT NOT NULL,
+      payment_type TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, id DESC);
   `);
   try {
     db.exec("ALTER TABLE users ADD COLUMN google_id TEXT");
@@ -121,6 +134,17 @@ export type UserRow = {
   google_id: string | null;
   plan: string;
   created_at: string;
+};
+
+export type TransactionRow = {
+  id: string;
+  user_id: number;
+  amount: number;
+  plan: string;
+  status: string;
+  payment_type: string | null;
+  created_at: string;
+  updated_at: string;
 };
 
 export type ApiKeyRow = {
