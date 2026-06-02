@@ -46,7 +46,7 @@ export async function POST(req: Request) {
   const hash = await bcrypt.hash(parsed.data.password, 12);
   const stmt = db.prepare(`
     INSERT INTO users (email, name, phone, company, password_hash, plan)
-    VALUES (@email, @name, @phone, @company, @password_hash, 'free')
+    VALUES (@email, @name, @phone, @company, @password_hash, 'growth')
   `);
   const result = stmt.run({
     email: parsed.data.email,
