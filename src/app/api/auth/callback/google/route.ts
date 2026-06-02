@@ -17,6 +17,18 @@ export async function GET(req: Request) {
 
   console.log(`[Google OAuth Callback #${reqId}] GET invoked with state=${state}, code=${code ? 'present' : 'absent'}`);
 
+  // Ignore prefetch requests to avoid consuming state cookie or OAuth authorization code
+  const isPrefetch =
+    req.headers.get("purpose") === "prefetch" ||
+    req.headers.get("sec-purpose") === "prefetch" ||
+    req.headers.get("x-purpose") === "prefetch" ||
+    req.headers.get("next-router-prefetch") === "1";
+
+  if (isPrefetch) {
+    console.log(`[Google OAuth Callback #${reqId}] Ignoring prefetch request`);
+    return new Response(null, { status: 204 });
+  }
+
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll().map(c => `${c.name}=${c.value ? 'present' : 'empty'}`);
   console.log(`[Google OAuth Callback #${reqId}] Received cookies list:`, allCookies);

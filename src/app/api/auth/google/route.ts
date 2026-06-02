@@ -21,6 +21,8 @@ export async function GET(req: Request) {
 
   const state = crypto.randomBytes(32).toString("hex");
 
+  console.log(`[Google OAuth Sign In] Initiating login. AppUrl: ${appUrl}, State: ${state}, RedirectParam: ${redirectParam}`);
+
   const redirectUri = `${appUrl}/api/auth/callback/google`;
 
   const googleAuthUrl =
