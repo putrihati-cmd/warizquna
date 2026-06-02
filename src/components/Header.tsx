@@ -45,8 +45,8 @@ export function Header({ user: initialUser }: { user?: { name: string; email: st
           {user ? (
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-lg text-white transition-all hover:-translate-y-0.5 shadow-sm hover:shadow-md"
-              style={{ background: "var(--rizquna-green)" }}
+              className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-lg transition-colors hover:opacity-90 shadow-sm"
+              style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
             >
               <LayoutDashboard className="w-4 h-4" />
               Dashboard
@@ -62,8 +62,8 @@ export function Header({ user: initialUser }: { user?: { name: string; email: st
               </Link>
               <Link
                 href="/register"
-                className="text-sm font-bold px-5 py-2.5 rounded-lg text-white transition-all hover:-translate-y-0.5 shadow-sm hover:shadow-md"
-                style={{ background: "var(--rizquna-green)" }}
+                className="text-sm font-bold px-5 py-2.5 rounded-lg transition-colors hover:opacity-90 shadow-sm"
+                style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
               >
                 Coba Gratis
               </Link>
@@ -97,8 +97,8 @@ export function Header({ user: initialUser }: { user?: { name: string; email: st
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className="px-3 py-2.5 rounded-lg text-sm font-bold text-white text-center"
-                style={{ background: "var(--rizquna-green)" }}
+                className="px-3 py-2.5 rounded-lg text-sm font-bold text-center"
+                style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
               >
                 Dashboard
               </Link>
@@ -114,8 +114,8 @@ export function Header({ user: initialUser }: { user?: { name: string; email: st
                 <Link
                   href="/register"
                   onClick={() => setOpen(false)}
-                  className="px-3 py-2.5 rounded-lg text-sm font-bold text-white text-center"
-                  style={{ background: "var(--rizquna-green)" }}
+                  className="px-3 py-2.5 rounded-lg text-sm font-bold text-center"
+                  style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
                 >
                   Coba Gratis
                 </Link>

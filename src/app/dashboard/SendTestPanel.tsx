@@ -33,14 +33,13 @@ export default function SendTestPanel() {
   }
 
   return (
-    <div className="rounded-2xl p-6" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}>
+    <div className="rounded-xl p-6 border shadow-sm" style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}>
       <div className="flex items-center gap-2 mb-2">
-        <Send className="w-5 h-5" style={{ color: "var(--rizquna-green)" }} />
+        <Send className="w-5 h-5" style={{ color: "var(--text-primary)" }} />
         <h2 className="text-lg font-bold">Kirim Pesan Tes</h2>
       </div>
       <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-        Kirim pesan langsung melalui wa-gateway internal. Pastikan device sudah terhubung di
-        panel admin.
+        Kirim pesan langsung melalui wa-gateway internal. Pastikan device sudah terhubung di panel admin.
       </p>
 
       <form onSubmit={submit} className="mt-4 space-y-3">
@@ -51,8 +50,8 @@ export default function SendTestPanel() {
           aria-label="Nomor telepon penerima"
           required
           pattern="[0-9]{8,18}"
-          className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
+          className="w-full px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}
         />
         <textarea
           value={text}
@@ -61,14 +60,14 @@ export default function SendTestPanel() {
           required
           aria-label="Isi pesan tes"
           maxLength={1000}
-          className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
+          className="w-full px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}
         />
         <button
           type="submit"
           disabled={sending}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow-md disabled:opacity-50"
-          style={{ background: "var(--rizquna-green)" }}
+          className="inline-flex items-center gap-2 px-5 py-2 border rounded-lg text-sm font-semibold transition-colors hover:opacity-90 disabled:opacity-50"
+          style={{ background: "var(--text-primary)", color: "var(--bg-primary)", borderColor: "var(--text-primary)" }}
         >
           <Send className="w-4 h-4" />
           {sending ? "Mengirim..." : "Kirim"}

@@ -1,88 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Copy, Key, Plus, Trash2, Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Key, Plus, Trash2, Copy, Eye, EyeOff } from "lucide-react";
 
-type KeyItem = {
+type ApiKeyItem = {
   id: number;
   label: string;
   prefix: string;
-  last_used_at: string | null;
   created_at: string;
+  last_used_at: string | null;
 };
 
 export default function ApiKeysPanel() {
-  const [keys, setKeys] = useState<KeyItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
+  const [keys, setKeys] = useState<ApiKeyItem[]>([]);
   const [label, setLabel] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [revealed, setRevealed] = useState<string | null>(null);
   const [show, setShow] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function refresh() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/keys");
-      const data = (await res.json()) as { keys?: KeyItem[]; error?: string };
-      if (!res.ok) throw new Error(data.error || "Gagal memuat API key");
-      setKeys(data.keys || []);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Gagal memuat API key");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   useEffect(() => {
-    refresh();
+    fetch("/api/keys")
+      .then((r) => r.json())
+      .then((d) => {
+        setKeys(d.keys || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   async function create(e: React.FormEvent) {
     e.preventDefault();
     if (!label.trim()) return;
-    setCreating(true);
     setError(null);
+    setCreating(true);
+    setRevealed(null);
+    setShow(false);
+
     try {
       const res = await fetch("/api/keys", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ label: label.trim() }),
       });
-      const data = (await res.json()) as { ok?: boolean; key?: string; error?: string };
-      if (!res.ok || !data.key) throw new Error(data.error || "Gagal membuat API key");
-      setRevealed(data.key);
-      setShow(true);
-      setLabel("");
-      refresh();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Gagal membuat");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Gagal membuat key");
+      } else {
+        setKeys((s) => [data.key, ...s]);
+        setRevealed(data.token);
+        setLabel("");
+      }
+    } catch {
+      setError("Gagal menghubungi server");
     } finally {
       setCreating(false);
     }
   }
 
   async function revoke(id: number) {
-    if (!confirm("Revoke API key ini? Aplikasi yang masih memakainya akan menerima 401.")) return;
+    if (!confirm("Cabut (revoke) API key ini? Aplikasi yang menggunakannya tidak akan bisa mengakses API lagi.")) return;
     setError(null);
     try {
       const res = await fetch(`/api/keys?id=${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json() as { error?: string };
-        throw new Error(data.error || "Gagal mencabut API key");
+        setError("Gagal mencabut key");
+      } else {
+        setKeys((s) => s.filter((k) => k.id !== id));
       }
-      refresh();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Gagal mencabut API key");
+    } catch {
+      setError("Gagal menghubungi server");
     }
   }
 
-
   return (
-    <div className="rounded-2xl p-6" style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}>
+    <div className="rounded-xl p-6 border shadow-sm" style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}>
       <div className="flex items-center gap-2 mb-2">
-        <Key className="w-5 h-5" style={{ color: "var(--rizquna-green)" }} />
+        <Key className="w-5 h-5" style={{ color: "var(--text-primary)" }} />
         <h2 className="text-lg font-bold">API Keys</h2>
       </div>
       <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
@@ -96,14 +91,14 @@ export default function ApiKeysPanel() {
           placeholder="Label, mis. 'Production WordPress'"
           aria-label="Label API key baru"
           maxLength={40}
-          className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
+          className="flex-1 px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}
         />
         <button
           type="submit"
           disabled={creating || !label.trim()}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white text-sm font-bold shadow-md disabled:opacity-50"
-          style={{ background: "var(--rizquna-green)" }}
+          className="inline-flex items-center gap-1.5 px-4 py-2 border rounded-lg text-sm font-semibold transition-colors hover:opacity-90 disabled:opacity-50"
+          style={{ background: "var(--text-primary)", color: "var(--bg-primary)", borderColor: "var(--text-primary)" }}
         >
           <Plus className="w-4 h-4" />
           {creating ? "Membuat..." : "Buat Key"}
@@ -113,8 +108,8 @@ export default function ApiKeysPanel() {
       {error && <p className="text-sm font-semibold mt-3" style={{ color: "#EF4444" }}>{error}</p>}
 
       {revealed && (
-        <div className="mt-4 rounded-xl p-4" style={{ background: "rgba(37,211,102,0.08)", border: "1px solid rgba(37,211,102,0.3)" }}>
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "var(--rizquna-green)" }}>
+        <div className="mt-4 rounded-xl p-4 border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "var(--text-primary)" }}>
             API key baru — copy sekarang
           </p>
           <div className="flex items-center gap-2">
@@ -122,14 +117,14 @@ export default function ApiKeysPanel() {
               readOnly
               value={show ? revealed : "•".repeat(40)}
               aria-label="Nilai API key baru"
-              className="flex-1 px-3 py-2 rounded-lg text-sm font-mono"
-              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", color: "var(--text-primary)" }}
+              className="flex-1 px-3 py-2 border rounded-lg text-sm font-mono bg-transparent outline-none"
+              style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}
             />
             <button
               type="button"
               onClick={() => setShow((s) => !s)}
-              className="px-3 py-2 rounded-lg"
-              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+              className="px-3 py-2 border rounded-lg hover:bg-slate-50 transition-colors"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
               aria-label={show ? "Sembunyikan" : "Tampilkan"}
             >
               {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -137,8 +132,8 @@ export default function ApiKeysPanel() {
             <button
               type="button"
               onClick={() => navigator.clipboard.writeText(revealed)}
-              className="px-3 py-2 rounded-lg"
-              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+              className="px-3 py-2 border rounded-lg hover:bg-slate-50 transition-colors"
+              style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
               aria-label="Copy"
             >
               <Copy className="w-4 h-4" />
@@ -147,7 +142,7 @@ export default function ApiKeysPanel() {
           <button
             type="button"
             onClick={() => setRevealed(null)}
-            className="text-xs font-semibold mt-3"
+            className="text-xs font-semibold mt-3 hover:underline"
             style={{ color: "var(--text-tertiary)" }}
           >
             Saya sudah menyimpan. Tutup.
@@ -163,8 +158,8 @@ export default function ApiKeysPanel() {
         {keys.map((k) => (
           <div
             key={k.id}
-            className="flex items-center justify-between gap-3 p-3 rounded-xl"
-            style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+            className="flex items-center justify-between gap-3 p-3 rounded-lg border hover:bg-slate-50/30 transition-colors"
+            style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}
           >
             <div className="min-w-0">
               <p className="font-semibold text-sm truncate">{k.label}</p>
@@ -179,9 +174,9 @@ export default function ApiKeysPanel() {
             <button
               type="button"
               onClick={() => revoke(k.id)}
-              className="p-2 rounded-lg"
-              style={{ color: "#EF4444", border: "1px solid var(--border-light)" }}
-              aria-label="Revoke"
+              className="p-2 border rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors bg-white"
+              style={{ color: "#EF4444", borderColor: "var(--border)" }}
+              aria-label="Cabut key"
             >
               <Trash2 className="w-4 h-4" />
             </button>

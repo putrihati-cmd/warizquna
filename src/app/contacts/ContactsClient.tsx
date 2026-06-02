@@ -103,8 +103,8 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
     <div className="mt-8 space-y-6">
       <form
         onSubmit={add}
-        className="rounded-2xl p-6 grid sm:grid-cols-4 gap-3"
-        style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+        className="rounded-xl p-5 grid sm:grid-cols-4 gap-3 border shadow-sm"
+        style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
       >
         <input
           required
@@ -112,8 +112,8 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           onChange={(e) => setName(e.target.value)}
           placeholder="Nama"
           aria-label="Nama kontak"
-          className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+          className="px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)" }}
         />
         <input
           required
@@ -122,22 +122,22 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           placeholder="Nomor (8-18 digit)"
           aria-label="Nomor telepon kontak"
           pattern="[0-9]{8,18}"
-          className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+          className="px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)" }}
         />
         <input
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           placeholder="Tag (pisah koma)"
           aria-label="Tag kontak"
-          className="px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+          className="px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)" }}
         />
         <button
           type="submit"
           disabled={adding}
-          className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow-md disabled:opacity-50"
-          style={{ background: "var(--rizquna-green)" }}
+          className="inline-flex items-center justify-center gap-1.5 px-5 py-2 border rounded-lg text-sm font-semibold transition-colors hover:opacity-90 disabled:opacity-50"
+          style={{ background: "var(--text-primary)", color: "var(--bg-primary)", borderColor: "var(--text-primary)" }}
         >
           <Plus className="w-4 h-4" />
           {adding ? "..." : "Tambah"}
@@ -151,26 +151,26 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter nama / nomor / tag..."
           aria-label="Filter kontak"
-          className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none focus:border-[var(--rizquna-green)]"
-          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+          className="flex-1 px-4 py-2.5 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
+          style={{ borderColor: "var(--border)" }}
         />
-        <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>
+        <span className="text-sm font-semibold" style={{ color: "var(--text-tertiary)" }}>
           {visible.length} / {items.length}
         </span>
       </div>
 
       <div
-        className="rounded-2xl overflow-x-auto"
-        style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+        className="rounded-xl border overflow-x-auto shadow-sm"
+        style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
       >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "var(--bg-surface)" }}>
-              <th className="text-left p-3 font-bold">Nama</th>
-              <th className="text-left p-3 font-bold">Nomor</th>
-              <th className="text-left p-3 font-bold">Tag</th>
-              <th className="text-left p-3 font-bold">Dibuat</th>
-              <th className="text-right p-3 font-bold">Aksi</th>
+            <tr style={{ background: "var(--bg-secondary)" }}>
+              <th className="text-left p-4 font-bold border-b" style={{ borderColor: "var(--border)" }}>Nama</th>
+              <th className="text-left p-4 font-bold border-b" style={{ borderColor: "var(--border)" }}>Nomor</th>
+              <th className="text-left p-4 font-bold border-b" style={{ borderColor: "var(--border)" }}>Tag</th>
+              <th className="text-left p-4 font-bold border-b" style={{ borderColor: "var(--border)" }}>Dibuat</th>
+              <th className="text-right p-4 font-bold border-b" style={{ borderColor: "var(--border)" }}>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -182,49 +182,49 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
               </tr>
             )}
             {visible.map((c) => (
-              <tr key={c.id} style={{ borderTop: "1px solid var(--border-light)" }}>
-                <td className="p-3 font-semibold">
+              <tr key={c.id} className="hover:bg-slate-50/50" style={{ borderTop: "1px solid var(--border-light)" }}>
+                <td className="p-4 font-semibold">
                   {editingId === c.id ? (
                     <input
                       value={editValues.name}
                       onChange={(e) => setEditValues((s) => ({ ...s, name: e.target.value }))}
                       aria-label="Edit nama kontak"
-                      className="w-full px-2 py-1 rounded text-sm"
-                      style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+                      className="w-full px-2 py-1 border rounded text-sm bg-transparent outline-none"
+                      style={{ borderColor: "var(--border)" }}
                     />
                   ) : (
                     c.name
                   )}
                 </td>
-                <td className="p-3 font-mono text-xs">
+                <td className="p-4 font-mono text-xs">
                   {editingId === c.id ? (
                     <input
                       value={editValues.phone}
                       onChange={(e) => setEditValues((s) => ({ ...s, phone: e.target.value }))}
                       aria-label="Edit nomor telepon kontak"
-                      className="w-full px-2 py-1 rounded text-sm font-mono"
-                      style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+                      className="w-full px-2 py-1 border rounded text-sm font-mono bg-transparent outline-none"
+                      style={{ borderColor: "var(--border)" }}
                     />
                   ) : (
                     c.phone
                   )}
                 </td>
-                <td className="p-3">
+                <td className="p-4">
                   {editingId === c.id ? (
                     <input
                       value={editValues.tags}
                       onChange={(e) => setEditValues((s) => ({ ...s, tags: e.target.value }))}
                       aria-label="Edit tag kontak"
-                      className="w-full px-2 py-1 rounded text-sm"
-                      style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}
+                      className="w-full px-2 py-1 border rounded text-sm bg-transparent outline-none"
+                      style={{ borderColor: "var(--border)" }}
                     />
                   ) : (
                     <div className="flex flex-wrap gap-1">
                       {c.tags.map((t) => (
                         <span
                           key={t}
-                          className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
-                          style={{ background: "rgba(37,211,102,0.1)", color: "var(--rizquna-green)" }}
+                          className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border"
+                          style={{ background: "var(--bg-secondary)", color: "var(--text-secondary)", borderColor: "var(--border)" }}
                         >
                           {t}
                         </span>
@@ -232,26 +232,26 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
                     </div>
                   )}
                 </td>
-                <td className="p-3 text-xs" style={{ color: "var(--text-tertiary)" }}>
+                <td className="p-4 text-xs font-medium" style={{ color: "var(--text-tertiary)" }}>
                   {new Date(c.created_at + "Z").toLocaleDateString("id-ID")}
                 </td>
-                <td className="p-3 text-right">
+                <td className="p-4 text-right">
                   {editingId === c.id ? (
                     <>
-                      <button onClick={() => saveEdit(c.id)} className="p-2 rounded-lg" style={{ color: "var(--rizquna-green)" }} aria-label="Simpan">
-                        <Check className="w-4 h-4" />
+                      <button onClick={() => saveEdit(c.id)} className="p-1.5 rounded border hover:bg-slate-100 transition-colors" style={{ color: "var(--text-primary)", borderColor: "var(--border)" }} aria-label="Simpan">
+                        <Check className="w-3.5 h-3.5" />
                       </button>
-                      <button onClick={() => setEditingId(null)} className="p-2 rounded-lg" style={{ color: "var(--text-tertiary)" }} aria-label="Batal">
-                        <X className="w-4 h-4" />
+                      <button onClick={() => setEditingId(null)} className="p-1.5 rounded border hover:bg-slate-100 transition-colors ml-1" style={{ color: "var(--text-tertiary)", borderColor: "var(--border)" }} aria-label="Batal">
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => startEdit(c)} className="p-2 rounded-lg" style={{ color: "var(--text-tertiary)" }} aria-label="Edit">
-                        <Pencil className="w-4 h-4" />
+                      <button onClick={() => startEdit(c)} className="p-1.5 rounded border hover:bg-slate-100 transition-colors" style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }} aria-label="Edit">
+                        <Pencil className="w-3.5 h-3.5" />
                       </button>
-                      <button onClick={() => del(c.id)} className="p-2 rounded-lg" style={{ color: "#EF4444" }} aria-label="Hapus">
-                        <Trash2 className="w-4 h-4" />
+                      <button onClick={() => del(c.id)} className="p-1.5 rounded border hover:bg-red-50 transition-colors ml-1" style={{ color: "#EF4444", borderColor: "var(--border)" }} aria-label="Hapus">
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </>
                   )}
