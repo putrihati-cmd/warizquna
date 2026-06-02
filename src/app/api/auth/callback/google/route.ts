@@ -106,7 +106,7 @@ export async function GET(req: Request) {
           .prepare(
             "INSERT INTO users (email, name, password_hash, google_id, plan) VALUES (?, ?, ?, ?, ?)"
           )
-          .run(googleUser.email, googleUser.name || "Google User", passwordSentinel, googleUser.sub, "growth");
+          .run(googleUser.email, googleUser.name || "Google User", passwordSentinel, googleUser.sub, "free");
 
         const newId = Number(result.lastInsertRowid);
         user = db
