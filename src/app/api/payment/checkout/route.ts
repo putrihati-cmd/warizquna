@@ -39,11 +39,20 @@ export async function POST(req: Request) {
 
   try {
     const snap = getSnapClient();
+    const planLabel = plan === "starter" ? "Starter Plan (30 hari)" : "Growth Plan (30 hari)";
     const transaction = await snap.createTransaction({
       transaction_details: {
         order_id: orderId,
         gross_amount: amount,
       },
+      item_details: [
+        {
+          id: plan,
+          price: amount,
+          quantity: 1,
+          name: planLabel,
+        },
+      ],
       credit_card: {
         secure: true,
       },

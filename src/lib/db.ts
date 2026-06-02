@@ -22,6 +22,7 @@ export function getDb() {
       password_hash TEXT NOT NULL,
       google_id TEXT UNIQUE,
       plan TEXT NOT NULL DEFAULT 'free',
+      plan_expires_at TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -117,6 +118,11 @@ export function getDb() {
   `);
   try {
     db.exec("ALTER TABLE users ADD COLUMN google_id TEXT");
+  } catch {
+    // Column already exists
+  }
+  try {
+    db.exec("ALTER TABLE users ADD COLUMN plan_expires_at TEXT");
   } catch {
     // Column already exists
   }
