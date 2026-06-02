@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Inbox, Send, Key, Webhook, Settings, ExternalLink } from "lucide-react";
+import { ArrowRight, Users, Send, Key, Webhook, Settings, ExternalLink } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { listApiKeys } from "@/lib/api-keys";
+import { getDb } from "@/lib/db";
 import LogoutButton from "./LogoutButton";
 import ApiKeysPanel from "./ApiKeysPanel";
 import SendTestPanel from "./SendTestPanel";
@@ -19,12 +20,19 @@ export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect("/login");
 
+  const db = getDb();
+  
+  // Fetch real counts from Database
+  const contactsCount = db.prepare("SELECT COUNT(*) as count FROM contacts WHERE user_id = ?").get(session.uid) as { count: number } | undefined;
+  const webhooksCount = db.prepare("SELECT COUNT(*) as count FROM webhooks WHERE user_id = ?").get(session.uid) as { count: number } | undefined;
+  const messagesCount = db.prepare("SELECT COUNT(*) as count FROM messages WHERE user_id = ?").get(session.uid) as { count: number } | undefined;
   const keys = listApiKeys(session.uid);
+
   const tiles = [
-    { icon: Inbox, label: "Inbox", value: "0", desc: "Percakapan baru" },
-    { icon: Send, label: "Pesan", value: "0", desc: "Terkirim hari ini" },
-    { icon: Key, label: "API Key", value: String(keys.length), desc: keys.length ? "Aktif" : "Belum dibuat" },
-    { icon: Webhook, label: "Webhook", value: "—", desc: "Belum dikonfigurasi" },
+    { icon: Users, label: "Kontak", value: String(contactsCount?.count ?? 0), desc: "Kelola daftar kontak", href: "/contacts" },
+    { icon: Send, label: "Pesan", value: String(messagesCount?.count ?? 0), desc: "Terkirim & diterima", href: null },
+    { icon: Key, label: "API Key", value: String(keys.length), desc: keys.length ? "Aktif" : "Belum dibuat", href: null },
+    { icon: Webhook, label: "Webhook", value: String(webhooksCount?.count ?? 0), desc: "Integrasi aktif", href: null },
   ];
 
   return (
@@ -47,12 +55,8 @@ export default async function DashboardPage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {tiles.map((t) => {
           const Icon = t.icon;
-          return (
-            <div
-              key={t.label}
-              className="rounded-2xl p-5"
-              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
-            >
+          const content = (
+            <>
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>
                   {t.label}
@@ -63,6 +67,25 @@ export default async function DashboardPage() {
               <p className="text-xs mt-1" style={{ color: "var(--text-tertiary)" }}>
                 {t.desc}
               </p>
+            </>
+          );
+
+          return t.href ? (
+            <Link
+              key={t.label}
+              href={t.href}
+              className="rounded-2xl p-5 block hover:-translate-y-0.5 transition-all hover:shadow-sm"
+              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+            >
+              {content}
+            </Link>
+          ) : (
+            <div
+              key={t.label}
+              className="rounded-2xl p-5"
+              style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)" }}
+            >
+              {content}
             </div>
           );
         })}

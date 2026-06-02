@@ -77,16 +77,16 @@ export const POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: "ai-bot-untuk-cs-umkm",
-    title: "Bagaimana AI Bot Membantu CS UMKM Melayani Pelanggan 24/7",
-    excerpt: "Studi kasus implementasi AI Smart Bot untuk menjawab otomatis pertanyaan customer service di toko online Anda.",
+    slug: "webhook-auto-reply-untuk-cs-umkm",
+    title: "Bagaimana Webhook Auto-Reply Membantu CS UMKM Melayani Pelanggan 24/7",
+    excerpt: "Studi kasus implementasi sistem Webhook Auto-Reply untuk menjawab otomatis pertanyaan customer service di toko online Anda.",
     date: "2026-04-25",
     author: "Tim Rizquna",
     tag: "Use Case",
     readTime: "5 menit",
     content: [
       { type: "p", text: "Pelanggan mengharapkan respon cepat kapan saja mereka mengirim chat. Integrasikan webhook auto-reply untuk merespon FAQ pelanggan toko online Anda tanpa henti." },
-      { type: "h2", text: "Beberapa Skenario Penggunaan AI Bot" },
+      { type: "h2", text: "Beberapa Skenario Penggunaan Webhook Auto-Reply" },
       { type: "ul", items: [
         "Membalas otomatis pertanyaan mengenai jam operasional dan lokasi toko.",
         "Mengirim link katalog produk atau detail produk terpopuler.",
@@ -94,7 +94,7 @@ export const POSTS: BlogPost[] = [
         "Mengirim link pembayaran invoice secara instan.",
       ] },
       { type: "h2", text: "Pengaturan Handover ke Manusia" },
-      { type: "p", text: "Gunakan logika handover. Jika bot tidak mendeteksi kata kunci yang sesuai atau jika pelanggan mengetik kata kunci tertentu seperti 'bantuan admin', bot akan mematikan auto-responder untuk sesi tersebut dan menandainya agar dilayani oleh CS manusia." },
+      { type: "p", text: "Gunakan logika handover. Jika sistem auto-reply eksternal Anda tidak mendeteksi kata kunci yang sesuai atau jika pelanggan mengetik kata kunci tertentu seperti 'bantuan admin', webhook akan meneruskan notifikasi penting ke tim support Anda." },
     ],
   },
 ];

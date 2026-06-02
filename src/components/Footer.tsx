@@ -37,8 +37,8 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-4 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Platform WhatsApp API Gateway & Developer Tooling. Kelola pesan otomatis, inbox terpusat, dan
-              integrasi API tanpa pusing.
+              Platform WhatsApp API Gateway & Developer Tooling. Kirim pesan cepat, kelola kontak, dan
+              integrasikan API dengan mudah.
             </p>
             <div className="flex items-center gap-2 mt-5">
               {SITE.social.linkedin && SITE.social.linkedin !== "#" && (

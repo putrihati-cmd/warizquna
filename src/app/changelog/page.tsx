@@ -24,7 +24,7 @@ const RELEASES = [
     date: "2026-05-26",
     highlights: [
       { type: "feature", text: "Halaman publik baru: blog, changelog, docs" },
-      { type: "feature", text: "Schema.org JSON-LD untuk SEO yang lebih baik" },
+      { type: "feature", text: "Schema.org JSON-LD untuk SEO" },
       { type: "feature", text: "Real authentication dengan JWT & bcrypt" },
       { type: "improvement", text: "Upgrade ke Next.js 16.2.6 (security patch CVE-2025-66478)" },
     ],
@@ -33,28 +33,24 @@ const RELEASES = [
     version: "1.3.0",
     date: "2026-05-13",
     highlights: [
-      { type: "feature", text: "AI Smart Bot Action dengan custom training" },
-      { type: "feature", text: "Spintax Replacement untuk variasi pesan otomatis" },
-      { type: "feature", text: "Smart Perfect Timing — pengiriman pesan di jam optimal" },
-      { type: "improvement", text: "Inbox multi-agent dengan handover protocol" },
+      { type: "improvement", text: "Peningkatan validasi format nomor telepon internasional secara otomatis" },
+      { type: "improvement", text: "Optimasi sistem polling konektivitas QR Code pada panel admin" },
     ],
   },
   {
     version: "1.2.0",
     date: "2026-04-20",
     highlights: [
-      { type: "feature", text: "Smart Delay & Spintax Filter" },
-      { type: "feature", text: "Export laporan ke PDF & Excel" },
-      { type: "fix", text: "Webhook retry logic kini support exponential backoff" },
+      { type: "feature", text: "Integrasi Webhook event delivery untuk pesan masuk & status" },
+      { type: "fix", text: "Webhook delivery kini mendukung exponential backoff retry" },
     ],
   },
   {
     version: "1.1.0",
     date: "2026-03-15",
     highlights: [
-      { type: "feature", text: "Integrasi Zapier, Google Sheets, dan Gmail" },
-      { type: "feature", text: "Custom field & segmentasi kontak presisi" },
-      { type: "improvement", text: "Performa broadcast 3x lebih cepat" },
+      { type: "feature", text: "Sistem penyimpanan kontak lokal sederhana dengan tag" },
+      { type: "improvement", text: "Optimalisasi query database SQLite untuk performa lebih cepat" },
     ],
   },
   {
@@ -62,8 +58,8 @@ const RELEASES = [
     date: "2026-02-01",
     highlights: [
       { type: "feature", text: "Public launch — Rizquna WA Gateway" },
-      { type: "feature", text: "WhatsApp API Gateway & Webhook" },
-      { type: "feature", text: "Inbox terpusat, broadcast, template, REST API" },
+      { type: "feature", text: "WhatsApp API Gateway & REST API" },
+      { type: "feature", text: "Koneksi QR Perangkat via dashboard admin" },
     ],
   },
 ];

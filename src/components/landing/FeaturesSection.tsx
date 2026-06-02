@@ -11,7 +11,7 @@ export function FeaturesSection() {
           <SectionHead
             eyebrow="Fitur Unggulan"
             title="Semua yang Anda Butuhkan untuk WhatsApp Business"
-            subtitle="Dari pengiriman pesan otomatis hingga inbox terpusat — Rizquna menyediakan semua tools untuk mengoptimalkan komunikasi bisnis Anda."
+            subtitle="Dari integrasi REST API yang mudah hingga webhooks real-time — Rizquna menyediakan semua tools untuk mengoptimalkan komunikasi bisnis Anda."
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-l" style={{ borderColor: "var(--border)" }}>
             {FEATURES.map((f) => {
@@ -46,7 +46,7 @@ function HowItWorks() {
     { n: 1, t: "Daftar Akun Rizquna", d: "Buat akun gratis di Rizquna. Proses cepat dan langsung masuk ke dashboard utama." },
     { n: 2, t: "Hubungkan Nomor WhatsApp", d: "Hubungkan nomor WhatsApp Anda secara instan dengan memindai (scan) QR Code di dashboard." },
     { n: 3, t: "Mulai Kirim Pesan", d: "Kirim pesan lewat dashboard panel atau hubungkan REST API Rizquna ke aplikasi atau website Anda." },
-    { n: 4, t: "Pantau & Analisis", d: "Dapatkan laporan log pengiriman, kelola kontak, dan atur pesan otomatis dengan mudah." },
+    { n: 4, t: "Pantau & Analisis", d: "Dapatkan laporan log pengiriman, status webhook, dan kelola kontak dengan mudah." },
   ];
   return (
     <section id="how-it-works" className="py-20 border-b" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-light)" }}>

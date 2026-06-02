@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Send, Lock, Server, Globe, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Lock, Server, Globe, Sparkles } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 export function HeroSection() {
@@ -48,84 +48,12 @@ export function HeroSection() {
             Gratis Selamanya + Trial Premium 30 Hari · Tanpa kartu kredit
           </p>
 
-          {/* Redesigned Mock Chat Card */}
-          <div className="max-w-2xl mx-auto pt-8">
-            <div
-              className="rounded-2xl border text-left overflow-hidden shadow-sm"
-              style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
-            >
-              <div
-                className="px-6 py-4 flex items-center justify-between border-b"
-                style={{ borderColor: "var(--border-light)" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
-                    TO
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>Bot Toko Online (via Webhook)</p>
-                    <p className="text-[10px]" style={{ color: "var(--text-tertiary)" }}>Simulator Otomasi API</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live API
-                </div>
-              </div>
-              <div className="p-6 space-y-4" style={{ background: "var(--bg-secondary)" }}>
-                <ChatBubble side="left">Ada promo produk sepatu seri X hari ini?</ChatBubble>
-                <ChatBubble side="right">
-                  Ada Kak! Sepatu seri X sedang diskon 20% khusus hari ini. Totalnya jadi Rp 400.000.
-                  Mau saya buatkan link pembayarannya? 👟
-                </ChatBubble>
-                <ChatBubble side="left">Boleh, bayar pakai QRIS ya.</ChatBubble>
-                <ChatBubble side="right">
-                  Siap! Ini link QRIS-nya Kak. Pesanan akan otomatis diproses setelah pembayaran
-                  berhasil. 🚀
-                  <span className="block mt-2 px-3 py-2 rounded-lg text-xs font-semibold border text-center cursor-pointer hover:bg-slate-50 transition-colors" style={{ background: "var(--bg-card)", borderColor: "var(--border)", color: "var(--text-primary)" }}>
-                    Bayar Rp 400.000 (QRIS)
-                  </span>
-                </ChatBubble>
-              </div>
-              <div
-                className="px-6 py-4 flex items-center gap-3 border-t"
-                style={{ background: "var(--bg-card)", borderColor: "var(--border-light)" }}
-              >
-                <div
-                  className="flex-1 rounded-lg h-10 px-4 flex items-center text-xs border"
-                  style={{ background: "var(--bg-secondary)", color: "var(--text-tertiary)", borderColor: "var(--border)" }}
-                >
-                  Ketik pesan balasan...
-                </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer hover:opacity-90 shadow-sm" style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}>
-                  <Send className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </section>
 
       <TrustBar />
     </>
-  );
-}
-
-function ChatBubble({ side, children }: { side: "left" | "right"; children: React.ReactNode }) {
-  const isRight = side === "right";
-  return (
-    <div className={`flex ${isRight ? "justify-end" : "justify-start"}`}>
-      <div
-        className="max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed border shadow-sm"
-        style={
-          isRight
-            ? { background: "var(--bg-card)", color: "var(--text-primary)", borderColor: "var(--border)", borderTopRightRadius: 4 }
-            : { background: "var(--bg-primary)", color: "var(--text-primary)", borderColor: "var(--border)", borderTopLeftRadius: 4 }
-        }
-      >
-        {children}
-      </div>
-    </div>
   );
 }
 
