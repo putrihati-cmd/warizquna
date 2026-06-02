@@ -94,12 +94,19 @@ export async function POST(req: Request) {
   // wa-gateway expects /api/send-message {sessionName, to, message}.
   // For text: send body directly. Template messages are flattened into a string fallback
   // until the upstream supports template-aware payloads.
-  const targetMessage =
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@rizquna.id";
+  const isFreeUser = plan === "free" && auth.user.email !== adminEmail;
+
+  let targetMessage =
     parsed.data.type === "text"
       ? parsed.data.text.body
       : `[template:${parsed.data.template.name}] ${
           (parsed.data.template.components ?? []).map((c) => JSON.stringify(c)).join(" ")
         }`;
+
+  if (isFreeUser) {
+    targetMessage += "\n\n---\nKirim WhatsApp API gratis via wa.rizquna.id";
+  }
 
   let upstreamStatus = 0;
   let upstreamBody = "";

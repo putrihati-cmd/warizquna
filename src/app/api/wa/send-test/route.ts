@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/auth";
 import { rateLimit, clientIpFromRequest } from "@/lib/rate-limit";
+import { getDb } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -54,6 +55,17 @@ export async function POST(req: Request) {
     );
   }
 
+  const db = getDb();
+  const user = db.prepare("SELECT plan FROM users WHERE id = ?").get(session.uid) as { plan: string } | undefined;
+  const plan = (user?.plan || "free").toLowerCase();
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@rizquna.id";
+  const isFreeUser = plan === "free" && session.email !== adminEmail;
+
+  let targetMessage = parsed.data.text;
+  if (isFreeUser) {
+    targetMessage += "\n\n---\nKirim WhatsApp API gratis via wa.rizquna.id";
+  }
+
   try {
     const res = await fetch(`${baseUrl}/api/send-message`, {
       method: "POST",
@@ -64,7 +76,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         sessionName,
         to: parsed.data.to,
-        message: parsed.data.text,
+        message: targetMessage,
       }),
       signal: AbortSignal.timeout(15000),
     });

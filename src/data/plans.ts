@@ -16,7 +16,7 @@ export const PLANS: Plan[] = [
     desc: "Mulai kirim pesan WhatsApp tanpa biaya.",
     monthly: "Rp0",
     yearly: "Rp0",
-    limits: ["1 nomor WhatsApp", "100 pesan/bulan", "Dashboard dasar", "API access"],
+    limits: ["1 nomor WhatsApp", "100 pesan/bulan", "Watermark promo pada pesan", "API access"],
     href: "/register",
     cta: "Mulai Gratis",
     features: {
@@ -25,6 +25,7 @@ export const PLANS: Plan[] = [
       "Webhook masuk": false,
       "Manajemen kontak": true,
       "Dukungan prioritas": false,
+      "Tanpa Watermark": false,
     },
   },
   {
@@ -32,7 +33,7 @@ export const PLANS: Plan[] = [
     desc: "Untuk UMKM dan toko online kecil.",
     monthly: "Rp99rb",
     yearly: "Rp79rb/bln",
-    limits: ["1 nomor WhatsApp", "5.000 pesan/bulan", "Webhook", "Email support"],
+    limits: ["1 nomor WhatsApp", "5.000 pesan/bulan", "Bebas watermark", "Email support"],
     href: "/register",
     cta: "Coba Starter",
     features: {
@@ -41,6 +42,7 @@ export const PLANS: Plan[] = [
       "Webhook masuk": true,
       "Manajemen kontak": true,
       "Dukungan prioritas": false,
+      "Tanpa Watermark": true,
     },
   },
   {
@@ -48,7 +50,7 @@ export const PLANS: Plan[] = [
     desc: "Paket populer untuk bisnis berkembang.",
     monthly: "Rp249rb",
     yearly: "Rp199rb/bln",
-    limits: ["3 nomor WhatsApp", "25.000 pesan/bulan", "Template & webhook", "Priority support"],
+    limits: ["3 nomor WhatsApp", "25.000 pesan/bulan", "Bebas watermark", "Priority support"],
     href: "/register",
     cta: "Pilih Growth",
     highlight: true,
@@ -58,6 +60,7 @@ export const PLANS: Plan[] = [
       "Webhook masuk": true,
       "Manajemen kontak": true,
       "Dukungan prioritas": true,
+      "Tanpa Watermark": true,
     },
   },
   {
@@ -65,7 +68,7 @@ export const PLANS: Plan[] = [
     desc: "Untuk kebutuhan skala besar dan custom.",
     monthly: "Custom",
     yearly: "Custom",
-    limits: ["Nomor unlimited", "Pesan high volume", "SLA khusus", "Integrasi custom"],
+    limits: ["Nomor unlimited", "Pesan high volume", "Bebas watermark", "Integrasi custom"],
     href: "/contact",
     cta: "Hubungi Kami",
     features: {
@@ -74,6 +77,7 @@ export const PLANS: Plan[] = [
       "Webhook masuk": true,
       "Manajemen kontak": true,
       "Dukungan prioritas": true,
+      "Tanpa Watermark": true,
     },
   },
 ];
@@ -81,7 +85,7 @@ export const PLANS: Plan[] = [
 export const FEATURE_GROUPS = [
   {
     title: "Fitur Utama",
-    items: ["API Gateway & Wrapper", "Dashboard pengiriman", "Webhook masuk"],
+    items: ["API Gateway & Wrapper", "Dashboard pengiriman", "Webhook masuk", "Tanpa Watermark"],
   },
   {
     title: "Manajemen & Dukungan",
