@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 
-export default function SendTestPanel() {
+export default function SendTestPanel({ isFreeUser = false }: { isFreeUser?: boolean }) {
   const [to, setTo] = useState("");
   const [text, setText] = useState("Halo dari Rizquna WA Gateway!");
   const [sending, setSending] = useState(false);
@@ -63,6 +63,11 @@ export default function SendTestPanel() {
           className="w-full px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
           style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}
         />
+        {isFreeUser && (
+          <p className="text-xs italic" style={{ color: "var(--text-tertiary)" }}>
+            * Pesan Anda akan secara otomatis disertai watermark promosi &quot;wa.rizquna.id&quot; karena akun Anda berada pada paket Free.
+          </p>
+        )}
         <button
           type="submit"
           disabled={sending}

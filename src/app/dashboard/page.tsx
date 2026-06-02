@@ -27,6 +27,11 @@ export default async function DashboardPage() {
   const webhooksCount = db.prepare("SELECT COUNT(*) as count FROM webhooks WHERE user_id = ?").get(session.uid) as { count: number } | undefined;
   const messagesCount = db.prepare("SELECT COUNT(*) as count FROM messages WHERE user_id = ?").get(session.uid) as { count: number } | undefined;
   const keys = listApiKeys(session.uid);
+  const userRow = db.prepare("SELECT plan, email FROM users WHERE id = ?").get(session.uid) as { plan: string; email: string } | undefined;
+  const plan = userRow?.plan || "free";
+  const email = userRow?.email || "";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@rizquna.id";
+  const isFreeUser = plan === "free" && email !== adminEmail;
 
   const tiles = [
     { icon: Users, label: "Kontak", value: String(contactsCount?.count ?? 0), desc: "Kelola daftar kontak", href: "/contacts" },
@@ -93,7 +98,7 @@ export default async function DashboardPage() {
 
       <div className="grid md:grid-cols-2 gap-5 mb-5">
         <ApiKeysPanel />
-        <SendTestPanel />
+        <SendTestPanel isFreeUser={isFreeUser} />
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">
