@@ -5,7 +5,7 @@ type ParsedRequest<T> =
   | { success: true; data: T }
   | { success: false; response: NextResponse };
 
-export async function parseBody<T>(req: Request, schema: z.ZodType<T>): Promise<ParsedRequest<T>> {
+export async function parseBody<T extends z.ZodTypeAny>(req: Request, schema: T): Promise<ParsedRequest<z.output<T>>> {
   let json: unknown;
   try {
     json = await req.json();

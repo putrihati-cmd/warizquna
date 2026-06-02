@@ -43,7 +43,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
 
   const next = {
     name: parsed.data.name ?? existing.name,
-    phone: parsed.data.phone ?? existing.phone,
+    phone: typeof parsed.data.phone === "string" ? parsed.data.phone : existing.phone,
     tags: parsed.data.tags ? JSON.stringify(parsed.data.tags) : existing.tags,
     attributes: parsed.data.attributes ? JSON.stringify(parsed.data.attributes) : existing.attributes,
   };

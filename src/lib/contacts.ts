@@ -12,8 +12,16 @@ export type ContactRow = {
   updated_at: string;
 };
 
+const cleanPhone = (val: unknown): string => {
+  if (typeof val !== "string") return "";
+  let cleaned = val.replace(/[^0-9+]/g, "");
+  if (cleaned.startsWith("+")) cleaned = cleaned.slice(1);
+  if (cleaned.startsWith("0")) cleaned = "62" + cleaned.slice(1);
+  return cleaned;
+};
+
 export const ContactValidationSchema = z.object({
-  phone: z.string().regex(/^[0-9]{8,18}$/),
+  phone: z.preprocess(cleanPhone, z.string().regex(/^[0-9]{8,18}$/, "Nomor telepon harus berupa 8-18 digit")),
   name: z.string().min(1).max(120),
   tags: z.array(z.string().max(40)).max(20).optional(),
   attributes: z.record(z.string(), z.string().max(500)).optional(),
@@ -21,7 +29,7 @@ export const ContactValidationSchema = z.object({
 
 export const ContactPatchValidationSchema = z.object({
   name: z.string().min(1).max(120).optional(),
-  phone: z.string().regex(/^[0-9]{8,18}$/).optional(),
+  phone: z.preprocess((val) => (val === undefined ? undefined : cleanPhone(val)), z.string().regex(/^[0-9]{8,18}$/, "Nomor telepon harus berupa 8-18 digit")).optional(),
   tags: z.array(z.string().max(40)).max(20).optional(),
   attributes: z.record(z.string(), z.string().max(500)).optional(),
 });
