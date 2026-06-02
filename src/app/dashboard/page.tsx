@@ -80,7 +80,7 @@ export default async function DashboardPage() {
         >
           <h2 className="text-lg font-bold mb-2">Mulai mengirim pesan pertama</h2>
           <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-            Hubungkan nomor WhatsApp Business API Anda di panel admin gateway untuk mulai
+            Hubungkan nomor WhatsApp Anda di panel admin gateway untuk mulai
             mengirim pesan.
           </p>
           <Link
