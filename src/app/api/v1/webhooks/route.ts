@@ -3,6 +3,8 @@ import { z } from "zod";
 import { authenticateApiKey } from "@/lib/api-auth";
 import { auditLog } from "@/lib/audit";
 import { parseBody } from "@/lib/request";
+import { getDb } from "@/lib/db";
+import { PLAN_LIMITS } from "@/data/plans";
 import {
   SUPPORTED_EVENTS,
   createWebhook,
@@ -34,6 +36,26 @@ export async function POST(req: Request) {
   const auth = authenticateApiKey(req);
   if (!auth.ok) {
     return NextResponse.json({ error: auth.error }, { status: auth.status, headers: auth.rateLimitHeaders });
+  }
+
+  const db = getDb();
+  const plan = (auth.user.plan || "free").toLowerCase() as "free" | "starter" | "growth" | "enterprise";
+  const limits = PLAN_LIMITS[plan] || PLAN_LIMITS.free;
+
+  if (limits.maxWebhooks === 0) {
+    return NextResponse.json(
+      { error: `Webhook feature is disabled on the ${plan.toUpperCase()} plan. Please upgrade to Starter or Growth.` },
+      { status: 403, headers: auth.rateLimitHeaders }
+    );
+  }
+
+  const existingWebhooks = db.prepare("SELECT COUNT(*) as count FROM webhooks WHERE user_id = ?").get(auth.user.id) as { count: number } | undefined;
+  const webhookCount = existingWebhooks?.count ?? 0;
+  if (webhookCount >= limits.maxWebhooks) {
+    return NextResponse.json(
+      { error: `Webhook creation limit reached for plan ${plan.toUpperCase()} (limit: ${limits.maxWebhooks} webhooks)` },
+      { status: 403, headers: auth.rateLimitHeaders }
+    );
   }
 
   const parsed = await parseBody(req, Schema);

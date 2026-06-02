@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import crypto from "node:crypto";
 import { authenticateApiKey } from "@/lib/api-auth";
 import { auditLog } from "@/lib/audit";
+import { getDb } from "@/lib/db";
+import { PLAN_LIMITS } from "@/data/plans";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -39,6 +42,28 @@ export async function POST(req: Request) {
       { error: auth.error },
       { status: auth.status, headers: auth.rateLimitHeaders }
     );
+  }
+
+  const db = getDb();
+  const plan = (auth.user.plan || "free").toLowerCase() as "free" | "starter" | "growth" | "enterprise";
+  const limits = PLAN_LIMITS[plan] || PLAN_LIMITS.free;
+
+  if (limits.maxMessagesPerMonth !== Infinity) {
+    const row = db.prepare(`
+      SELECT COUNT(*) as count 
+      FROM messages 
+      WHERE user_id = ? 
+        AND direction = 'outbound' 
+        AND created_at >= date('now', 'start of month')
+    `).get(auth.user.id) as { count: number } | undefined;
+    
+    const sentCount = row?.count ?? 0;
+    if (sentCount >= limits.maxMessagesPerMonth) {
+      return NextResponse.json(
+        { error: `Monthly message quota exceeded for plan ${plan.toUpperCase()} (limit: ${limits.maxMessagesPerMonth} messages)` },
+        { status: 403 }
+      );
+    }
   }
 
   let json: unknown;
@@ -121,6 +146,17 @@ export async function POST(req: Request) {
     );
   }
 
+  const msgId = `msg_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
+  
+  try {
+    db.prepare(`
+      INSERT INTO messages (user_id, remote_jid, direction, content, status, external_id)
+      VALUES (?, ?, 'outbound', ?, 'sent', ?)
+    `).run(auth.user.id, parsed.data.to, targetMessage, msgId);
+  } catch (dbErr) {
+    console.error("[api/messages] failed to log outgoing message to db:", dbErr);
+  }
+
   auditLog({
     user_id: auth.key.user_id,
     api_key_id: auth.key.id,
@@ -129,10 +165,11 @@ export async function POST(req: Request) {
     status: "ok",
     message: `type=${parsed.data.type}`,
   });
+
   return NextResponse.json(
     {
       ok: true,
-      id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      id: msgId,
       type: parsed.data.type,
       upstream_status: upstreamStatus,
     },

@@ -88,3 +88,22 @@ export const FEATURE_GROUPS = [
     items: ["Manajemen kontak", "Dukungan prioritas"],
   },
 ];
+
+export const PLAN_LIMITS = {
+  free: {
+    maxWebhooks: 0,
+    maxMessagesPerMonth: 100,
+  },
+  starter: {
+    maxWebhooks: 1,
+    maxMessagesPerMonth: 5000,
+  },
+  growth: {
+    maxWebhooks: 5,
+    maxMessagesPerMonth: 25000,
+  },
+  enterprise: {
+    maxWebhooks: Infinity,
+    maxMessagesPerMonth: Infinity,
+  },
+} as const;
