@@ -6,14 +6,22 @@ import { auditLog } from "@/lib/audit";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+const cleanPhone = (val: unknown) => {
+  if (typeof val !== "string") return val;
+  let cleaned = val.replace(/[^0-9+]/g, "");
+  if (cleaned.startsWith("+")) cleaned = cleaned.slice(1);
+  if (cleaned.startsWith("0")) cleaned = "62" + cleaned.slice(1);
+  return cleaned;
+};
+
 const TextMessage = z.object({
-  to: z.string().regex(/^[0-9]{8,18}$/, "to must be 8-18 digits"),
+  to: z.preprocess(cleanPhone, z.string().regex(/^[0-9]{8,18}$/, "to must be 8-18 digits")),
   type: z.literal("text"),
   text: z.object({ body: z.string().min(1).max(4096) }),
 });
 
 const TemplateMessage = z.object({
-  to: z.string().regex(/^[0-9]{8,18}$/, "to must be 8-18 digits"),
+  to: z.preprocess(cleanPhone, z.string().regex(/^[0-9]{8,18}$/, "to must be 8-18 digits")),
   type: z.literal("template"),
   template: z.object({
     name: z.string().min(1).max(100),

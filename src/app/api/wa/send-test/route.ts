@@ -6,8 +6,16 @@ import { rateLimit, clientIpFromRequest } from "@/lib/rate-limit";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+const cleanPhone = (val: unknown) => {
+  if (typeof val !== "string") return val;
+  let cleaned = val.replace(/[^0-9+]/g, "");
+  if (cleaned.startsWith("+")) cleaned = cleaned.slice(1);
+  if (cleaned.startsWith("0")) cleaned = "62" + cleaned.slice(1);
+  return cleaned;
+};
+
 const Schema = z.object({
-  to: z.string().regex(/^[0-9]{8,18}$/, "Nomor tujuan tidak valid"),
+  to: z.preprocess(cleanPhone, z.string().regex(/^[0-9]{8,18}$/, "Nomor tujuan tidak valid")),
   text: z.string().min(1).max(1000),
 });
 
