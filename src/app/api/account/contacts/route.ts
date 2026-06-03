@@ -5,6 +5,7 @@ import { parseBody } from "@/lib/request";
 import {
   ContactValidationSchema,
   listContacts,
+  countContacts,
   insertContact,
   getContact,
   rowToJson,
@@ -17,9 +18,16 @@ export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const url = new URL(req.url);
-  const limit = Math.min(200, Math.max(1, Number(url.searchParams.get("limit") || 100)));
-  const rows = listContacts(session.uid, limit);
-  return NextResponse.json({ contacts: rows.map(rowToJson) });
+  const limit = Math.min(200, Math.max(1, Number(url.searchParams.get("limit") || 50)));
+  const offset = Math.max(0, Number(url.searchParams.get("offset") || 0));
+  const rows = listContacts(session.uid, limit, offset);
+  const total = countContacts(session.uid);
+  return NextResponse.json({
+    total,
+    limit,
+    offset,
+    contacts: rows.map(rowToJson),
+  });
 }
 
 export async function POST(req: Request) {

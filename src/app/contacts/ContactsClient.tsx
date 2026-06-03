@@ -11,8 +11,12 @@ export type ContactItem = {
   created_at: string;
 };
 
-export default function ContactsClient({ initial }: { initial: ContactItem[] }) {
+export default function ContactsClient({ initial, initialTotal }: { initial: ContactItem[]; initialTotal: number }) {
   const [items, setItems] = useState<ContactItem[]>(initial);
+  const [total, setTotal] = useState(initialTotal);
+  const [page, setPage] = useState(1);
+  const limit = 50;
+
   const [adding, setAdding] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -26,10 +30,14 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
     tags: "",
   });
 
-  async function reload() {
-    const res = await fetch("/api/account/contacts?limit=200");
-    const data = (await res.json()) as { contacts: ContactItem[] };
+  async function reload(targetPage = page) {
+    const offset = (targetPage - 1) * limit;
+    const res = await fetch(`/api/account/contacts?limit=${limit}&offset=${offset}`);
+    const data = (await res.json()) as { contacts: ContactItem[]; total?: number };
     setItems(data.contacts || []);
+    if (typeof data.total === "number") {
+      setTotal(data.total);
+    }
   }
 
   async function add(e: React.FormEvent) {
@@ -50,7 +58,8 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
       if (!res.ok || !data.ok) {
         setError(data.error || "Gagal menambah");
       } else if (data.contact) {
-        setItems((s) => [data.contact!, ...s]);
+        setItems((s) => [data.contact!, ...s].slice(0, limit));
+        setTotal((t) => t + 1);
         setName("");
         setPhone("");
         setTags("");
@@ -65,7 +74,21 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
   async function del(id: number) {
     if (!confirm("Hapus kontak ini?")) return;
     const res = await fetch(`/api/account/contacts/${id}`, { method: "DELETE" });
-    if (res.ok) setItems((s) => s.filter((c) => c.id !== id));
+    if (res.ok) {
+      const remainingAfterDel = items.filter((c) => c.id !== id);
+      setItems(remainingAfterDel);
+      
+      const newTotal = Math.max(0, total - 1);
+      setTotal(newTotal);
+      
+      const totalPages = Math.ceil(newTotal / limit) || 1;
+      let targetPage = page;
+      if (page > totalPages) {
+        targetPage = totalPages;
+        setPage(totalPages);
+      }
+      reload(targetPage);
+    }
   }
 
   function startEdit(c: ContactItem) {
@@ -85,8 +108,13 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
     });
     if (res.ok) {
       setEditingId(null);
-      reload();
+      reload(page);
     }
+  }
+
+  function goToPage(p: number) {
+    setPage(p);
+    reload(p);
   }
 
   const visible = items.filter((c) => {
@@ -121,7 +149,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Nomor (8-18 digit)"
           aria-label="Nomor telepon kontak"
-          pattern="[0-9]{8,18}"
+          pattern="^\+?[0-9]{8,18}$"
           className="px-4 py-2 border rounded-lg text-sm bg-transparent outline-none focus:border-slate-800 transition-colors"
           style={{ borderColor: "var(--border)" }}
         />
@@ -182,7 +210,7 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
               </tr>
             )}
             {visible.map((c) => (
-              <tr key={c.id} className="hover:bg-slate-50/50" style={{ borderTop: "1px solid var(--border-light)" }}>
+              <tr key={c.id} className="hover:bg-[var(--bg-secondary)]" style={{ borderTop: "1px solid var(--border-light)" }}>
                 <td className="p-4 font-semibold">
                   {editingId === c.id ? (
                     <input
@@ -199,9 +227,11 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
                 <td className="p-4 font-mono text-xs">
                   {editingId === c.id ? (
                     <input
+                      required
                       value={editValues.phone}
                       onChange={(e) => setEditValues((s) => ({ ...s, phone: e.target.value }))}
                       aria-label="Edit nomor telepon kontak"
+                      pattern="^\+?[0-9]{8,18}$"
                       className="w-full px-2 py-1 border rounded text-sm font-mono bg-transparent outline-none"
                       style={{ borderColor: "var(--border)" }}
                     />
@@ -261,6 +291,31 @@ export default function ContactsClient({ initial }: { initial: ContactItem[] }) 
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      {total > limit && (
+        <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: "var(--border)" }}>
+          <button
+            onClick={() => goToPage(page - 1)}
+            disabled={page === 1}
+            className="px-4 py-2 border rounded-lg text-sm font-semibold transition-colors hover:bg-[var(--bg-secondary)] disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ background: "var(--bg-card)", color: "var(--text-primary)", borderColor: "var(--border)" }}
+          >
+            Sebelumnya
+          </button>
+          <span className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
+            Halaman {page} dari {Math.ceil(total / limit)} ({total} total)
+          </span>
+          <button
+            onClick={() => goToPage(page + 1)}
+            disabled={page === Math.ceil(total / limit)}
+            className="px-4 py-2 border rounded-lg text-sm font-semibold transition-colors hover:bg-[var(--bg-secondary)] disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ background: "var(--bg-card)", color: "var(--text-primary)", borderColor: "var(--border)" }}
+          >
+            Berikutnya
+          </button>
+        </div>
+      )}
     </div>
   );
 }
